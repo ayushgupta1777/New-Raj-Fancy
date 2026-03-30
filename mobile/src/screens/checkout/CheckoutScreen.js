@@ -209,19 +209,22 @@ const CheckoutScreen = ({ navigation }) => {
       console.log('Creating order with data:', orderData);
 
       const result = await dispatch(createOrder(orderData)).unwrap();
-      // CRITICAL FIX: Ensure modal is fully closed before navigation starts
-      // This prevents the "rough out/crash" issue in many React Native setups
-      setTimeout(async () => {
+      
+      // CRITICAL: Clear processing state before starting navigation to avoid UI conflicts
+      setIsProcessing(false);
+
+      // Ensure modal is fully closed before navigation starts
+      setTimeout(() => {
         try {
-          // Serialize order for navigation to avoid any cyclic reference crashes
+          // Robust serialization to prevent navigation-reanimated crashes
           const navigationOrder = {
-             _id: result._id,
-             orderNo: result.orderNo,
-             total: result.total,
-             paymentMethod: result.paymentMethod,
+             _id: String(result._id),
+             orderNo: String(result.orderNo),
+             total: Number(result.total),
+             paymentMethod: String(result.paymentMethod),
              shippingAddress: {
-                city: result.shippingAddress?.city,
-                state: result.shippingAddress?.state
+                city: result.shippingAddress?.city || 'City',
+                state: result.shippingAddress?.state || 'State'
              }
           };
 
@@ -237,13 +240,11 @@ const CheckoutScreen = ({ navigation }) => {
           }
         } catch (navError) {
           console.error('Safe Navigation Failed:', navError);
-          setIsProcessing(false);
-          Alert.alert("Navigation Error", "Order placed but could not show success page. Please check your orders list.");
+          Alert.alert("Navigation Error", "Order placed but success page failed to load. You can see it in your Orders list.");
         }
-      }, 500);
+      }, 300);
 
     } catch (error) {
-
       console.error('Order creation failed:', error);
       setIsProcessing(false);
       Alert.alert(

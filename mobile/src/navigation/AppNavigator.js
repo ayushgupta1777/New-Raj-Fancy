@@ -9,18 +9,28 @@ import { loadUser } from '../redux/slices/authSlice';
 import AuthNavigator from './AuthNavigator';
 import MainNavigator from './MainNavigator';
 import LoadingScreen from '../screens/LoadingScreen';
+import DeveloperNavigator from './DeveloperNavigator';
+import { initSocket, disconnectSocket } from '../services/socket';
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
+  const { isAuthenticated, isLoading, user } = useSelector((state) => state.auth);
   const [initializing, setInitializing] = React.useState(true);
 
   useEffect(() => {
-    // Load user from storage on app start
     dispatch(loadUser()).finally(() => setInitializing(false));
   }, [dispatch]);
+
+  // Initialize socket when authenticated, disconnect on logout
+  useEffect(() => {
+    if (isAuthenticated) {
+      initSocket();
+    } else {
+      disconnectSocket();
+    }
+  }, [isAuthenticated]);
 
   if (initializing || isLoading) {
     return <LoadingScreen />;
@@ -29,7 +39,11 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isAuthenticated ? (
-        <Stack.Screen name="Main" component={MainNavigator} />
+        user?.role === 'developer' ? (
+          <Stack.Screen name="DeveloperMain" component={DeveloperNavigator} />
+        ) : (
+          <Stack.Screen name="Main" component={MainNavigator} />
+        )
       ) : (
         <Stack.Screen name="Auth" component={AuthNavigator} />
       )}

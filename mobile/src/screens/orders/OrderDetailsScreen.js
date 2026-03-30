@@ -894,6 +894,8 @@ const EnhancedOrderDetailsScreen = ({ route, navigation }) => {
   };
 
   const handleCancelOrder = async () => {
+    if (isCancelling) return; // Prevent double taps
+
     if (!cancelReason.trim()) {
       Alert.alert('Error', 'Please provide a reason for cancellation');
       return;

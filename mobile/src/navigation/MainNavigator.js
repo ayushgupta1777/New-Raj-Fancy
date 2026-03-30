@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
 import { TouchableOpacity, View } from 'react-native';
 import AdminStack from './AdminNavigator';
+import useActivityTracker from '../hooks/useActivityTracker';
 
 // Customer/Reseller Screens
 import HomeScreen from '../screens/home/HomeScreen';
@@ -339,6 +340,7 @@ const CURRENT_VERSION = '0.0.4';
 
 // MAIN NAVIGATOR
 const MainNavigator = () => {
+  useActivityTracker(); // 🟢 Real-time monitoring for Developer Terminal
   const { user, token } = useSelector((state) => state.auth);
   const [upgradeInfo, setUpgradeInfo] = React.useState({ visible: false, version: '', url: '' });
 

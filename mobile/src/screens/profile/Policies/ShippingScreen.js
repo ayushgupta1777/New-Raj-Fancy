@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const ShippingScreen = () => {
+const ShippingScreen = ({ navigation }) => {
   const [pincode, setPincode] = useState('');
   const [deliveryEstimate, setDeliveryEstimate] = useState(null);
 
@@ -23,241 +23,80 @@ const ShippingScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
-      {/* Header removed and moved to Navigator */}
-      <View style={{ height: 20 }} />
+      <View style={styles.header}>
+        <Icon name="bus-outline" size={48} color="#4F46E5" />
+        <Text style={styles.title}>Shipping & Delivery</Text>
+        <Text style={styles.subtitle}>Effective Date: January 30, 2026</Text>
+      </View>
 
       <View style={styles.content}>
-        {/* Pincode Checker */}
-        <View style={styles.pincodeChecker}>
-          <Text style={styles.pincodeTitle}>Check Delivery Availability</Text>
-          <View style={styles.pincodeInputContainer}>
-            <Icon name="location" size={20} color="#6B7280" />
-            <TextInput
-              style={styles.pincodeInput}
-              placeholder="Enter your pincode"
-              value={pincode}
-              onChangeText={setPincode}
-              keyboardType="numeric"
-              maxLength={6}
-            />
-            <TouchableOpacity
-              style={styles.checkButton}
-              onPress={checkDelivery}
-            >
-              <Text style={styles.checkButtonText}>Check</Text>
-            </TouchableOpacity>
-          </View>
+        <Section
+          icon="location"
+          iconColor="#0A84FF"
+          title="1. Delivery Coverage"
+          content="We deliver to 20,000+ pincodes across India using trusted logistics partners like Shiprocket, Delhivery, and BlueDart. Check availability at checkout."
+        />
 
-          {deliveryEstimate && (
-            <View style={styles.deliveryEstimate}>
-              <Icon name="checkmark-circle" size={24} color="#10B981" />
-              <View style={styles.estimateInfo}>
-                <Text style={styles.estimateText}>
-                  Delivery in {deliveryEstimate.days}
-                </Text>
-                <Text style={styles.estimateCharges}>
-                  Shipping: {deliveryEstimate.charges}
-                </Text>
-              </View>
-            </View>
-          )}
-        </View>
+        <Section
+          icon="time"
+          iconColor="#5E5CE6"
+          title="2. Processing Time"
+          content="Standard orders are processed and prepared for dispatch within 1–3 business days after payment confirmation."
+        />
 
-        {/* Shipping Options */}
-        <View style={styles.section}>
+        <Section
+          icon="airplane"
+          iconColor="#10B981"
+          title="3. Delivery Time"
+          content="• Metro Cities: 3–5 business days
+• Other Areas: 5–7 business days
+(Note: Remote areas may take 1-2 additional days)"
+        />
+
+        <Section
+          icon="wallet"
+          iconColor="#F59E0B"
+          title="4. Shipping Charges"
+          content="Shipping charges are calculated based on your location and total order value. The exact amount will be displayed clearly on the checkout page before you pay."
+        />
+
+        <Section
+          icon="notifications"
+          iconColor="#6366F1"
+          title="5. Tracking"
+          content="Once your order is dispatched, live tracking details will be shared with you automatically via SMS and WhatsApp."
+        />
+
+        <Section
+          icon="alert-circle"
+          iconColor="#EF4444"
+          title="6. Delays"
+          content="While we strive for on-time delivery, delays may occasionally occur due to courier operational issues, extreme weather, or unforeseen circumstances beyond our control."
+        />
+
+        {/* Extra Legal Section */}
+        <View style={[styles.section, { backgroundColor: '#F0F9FF', borderColor: '#4F46E5', borderWidth: 1 }]}>
           <View style={styles.sectionHeader}>
-            <Icon name="rocket" size={24} color="#4F46E5" />
-            <Text style={styles.sectionTitle}>Shipping Options</Text>
+            <Icon name="hammer" size={24} color="#4F46E5" />
+            <Text style={[styles.sectionTitle, { color: '#1E3A8A' }]}>Extra Legal (India Compliance)</Text>
+          </View>
+          
+          <View style={{ marginBottom: 16 }}>
+            <Text style={{ fontWeight: '700', color: '#1E40AF', marginBottom: 4 }}>⚖️ Governing Law</Text>
+            <Text style={{ fontSize: 13, color: '#1E3A8A', lineHeight: 20 }}>
+              These terms are governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the courts in Narsinghpur, Madhya Pradesh.
+            </Text>
           </View>
 
-          <ShippingOption
-            icon="flash"
-            iconColor="#FF9500"
-            title="Express Delivery"
-            time="1-2 business days"
-            price="₹99"
-            features={[
-              'Priority processing',
-              'Real-time tracking',
-              'Weekend delivery available'
-            ]}
-          />
-
-          <ShippingOption
-            icon="bicycle"
-            iconColor="#34C759"
-            title="Standard Delivery"
-            time="3-5 business days"
-            price="FREE on orders above ₹499"
-            features={[
-              'Reliable delivery',
-              'SMS & email updates',
-              'Secure packaging'
-            ]}
-          />
-
-          <ShippingOption
-            icon="home"
-            iconColor="#0A84FF"
-            title="Same Day Delivery"
-            time="Within 24 hours"
-            price="₹149"
-            features={[
-              'Available in select cities',
-              'Order before 12 PM',
-              'Premium packaging'
-            ]}
-            badge="Limited"
-          />
-        </View>
-
-        {/* Delivery Process */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Icon name="timer" size={24} color="#10B981" />
-            <Text style={styles.sectionTitle}>Delivery Process</Text>
+          <View>
+            <Text style={{ fontWeight: '700', color: '#1E40AF', marginBottom: 4 }}>✔️ Compliance</Text>
+            <Text style={{ fontSize: 13, color: '#1E3A8A', lineHeight: 20 }}>
+              We strictly adhere to:
+              {"\n"}• Consumer Protection Act, 2019
+              {"\n"}• Information Technology Act, 2000
+              {"\n"}• GST Regulations and Indian Trade Laws
+            </Text>
           </View>
-
-          <DeliveryStep
-            number="1"
-            icon="checkmark-done"
-            title="Order Confirmed"
-            description="Your order is confirmed and payment processed"
-            color="#10B981"
-          />
-
-          <DeliveryStep
-            number="2"
-            icon="cube"
-            title="Order Packed"
-            description="Your items are carefully packed and quality checked"
-            color="#0A84FF"
-          />
-
-          <DeliveryStep
-            number="3"
-            icon="airplane"
-            title="Shipped"
-            description="Your order is on its way to you"
-            color="#5E5CE6"
-          />
-
-          <DeliveryStep
-            number="4"
-            icon="home"
-            title="Out for Delivery"
-            description="Your order will be delivered today"
-            color="#FF9500"
-          />
-
-          <DeliveryStep
-            number="5"
-            icon="checkmark-circle"
-            title="Delivered"
-            description="Order successfully delivered to you"
-            color="#34C759"
-            isLast
-          />
-        </View>
-
-        {/* Tracking */}
-        <View style={styles.trackingSection}>
-          <View style={styles.trackingHeader}>
-            <Icon name="navigate" size={28} color="#fff" />
-            <View style={styles.trackingHeaderText}>
-              <Text style={styles.trackingTitle}>Real-Time Tracking</Text>
-              <Text style={styles.trackingSubtitle}>
-                Track your order every step of the way
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.trackingFeatures}>
-            <TrackingFeature
-              icon="notifications"
-              title="Instant Updates"
-              description="Get notified at every milestone"
-            />
-            <TrackingFeature
-              icon="map"
-              title="Live Location"
-              description="See delivery partner's location"
-            />
-            <TrackingFeature
-              icon="person"
-              title="Delivery Partner"
-              description="Contact details shared before delivery"
-            />
-          </View>
-        </View>
-
-        {/* Delivery Charges */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Icon name="pricetag" size={24} color="#FF9500" />
-            <Text style={styles.sectionTitle}>Delivery Charges</Text>
-          </View>
-
-          <View style={styles.chargesTable}>
-            <ChargeRow
-              label="Orders above ₹499"
-              value="FREE"
-              valueColor="#10B981"
-            />
-            <ChargeRow
-              label="Orders below ₹499"
-              value="₹49"
-              valueColor="#6B7280"
-            />
-            <ChargeRow
-              label="Express Delivery"
-              value="₹99"
-              valueColor="#FF9500"
-            />
-            <ChargeRow
-              label="Same Day Delivery"
-              value="₹149"
-              valueColor="#FF3B30"
-            />
-            <ChargeRow
-              label="Bulky/Heavy Items"
-              value="As per weight"
-              valueColor="#6B7280"
-            />
-          </View>
-        </View>
-
-        {/* Important Information */}
-        <View style={styles.infoSection}>
-          <View style={styles.infoHeader}>
-            <Icon name="information-circle" size={24} color="#0A84FF" />
-            <Text style={styles.infoTitle}>Important Information</Text>
-          </View>
-
-          <InfoItem
-            icon="time"
-            text="Delivery timings: Monday to Saturday, 9 AM to 7 PM"
-          />
-          <InfoItem
-            icon="calendar"
-            text="Orders placed on Sunday/holidays will be processed next working day"
-          />
-          <InfoItem
-            icon="location"
-            text="Remote areas may take 1-2 additional days"
-          />
-          <InfoItem
-            icon="alert-circle"
-            text="Delivery partner will call 30 minutes before arrival"
-          />
-          <InfoItem
-            icon="shield-checkmark"
-            text="Open box delivery available for high-value items"
-          />
-          <InfoItem
-            icon="receipt"
-            text="Invoice and warranty card included in package"
-          />
         </View>
 
         {/* Coverage Area */}
@@ -268,6 +107,22 @@ const ShippingScreen = () => {
           </Text>
         </View>
 
+        {/* Warehouse Details */}
+        <View style={styles.infoSection}>
+          <View style={styles.infoHeader}>
+            <Icon name="business" size={24} color="#0A84FF" />
+            <Text style={styles.infoTitle}>Warehouse Details</Text>
+          </View>
+          <InfoItem
+            icon="person-circle"
+            text="Warehouse SPOC: New Raj Fancy | 9343338599"
+          />
+          <InfoItem
+            icon="location-sharp"
+            text="New Raj Fancy Store, Ward no 15, Near Balaji Dham Colony, Sai Aastha Garden Ke Piche, Narsinghpur, Madhya Pradesh, India, 487118"
+          />
+        </View>
+
         {/* Contact */}
         <View style={styles.contactSection}>
           <Icon name="headset" size={32} color="#4F46E5" />
@@ -276,11 +131,17 @@ const ShippingScreen = () => {
             Our support team is here to help with any delivery-related queries
           </Text>
           <View style={styles.contactButtons}>
-            <TouchableOpacity style={styles.contactButton}>
+            <TouchableOpacity
+              style={styles.contactButton}
+              onPress={() => Linking.openURL('tel:+917240992230')}
+            >
               <Icon name="call" size={18} color="#4F46E5" />
               <Text style={styles.contactButtonText}>Call Us</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.contactButton}>
+            <TouchableOpacity
+              style={styles.contactButton}
+              onPress={() => navigation.navigate('UserChat')}
+            >
               <Icon name="chatbubbles" size={18} color="#4F46E5" />
               <Text style={styles.contactButtonText}>Chat Now</Text>
             </TouchableOpacity>

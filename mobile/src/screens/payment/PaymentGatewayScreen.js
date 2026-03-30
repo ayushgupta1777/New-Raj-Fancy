@@ -234,8 +234,7 @@ const PaymentGatewayScreen = ({ route, navigation }) => {
             onPress: () => {
               // Navigate to support or show contact info
               Alert.alert(
-                'Support',
-                'Please contact: support@newrajfancy.com\nOr call: [Your Support Number]'
+                'Please contact: newrajfancystore@gmail.com\nOr call: +91 724 099 2230'
               );
             }
           },

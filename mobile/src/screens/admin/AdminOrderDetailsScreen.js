@@ -195,6 +195,34 @@ const AdminOrderDetailsScreen = ({ route, navigation }) => {
     );
   };
 
+  const handleCancelOrder = async () => {
+    Alert.alert(
+      'Cancel Order',
+      'Are you sure you want to cancel this order? This will restore stock and notify the customer.',
+      [
+        { text: 'No', style: 'cancel' },
+        {
+          text: 'Yes, Cancel Order',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              setIsProcessing(true);
+              await api.put(`/admin/orders/${orderId}/cancel`, {
+                reason: 'Admin cancelled order'
+              });
+              Alert.alert('Success', 'Order has been cancelled');
+              fetchOrder();
+            } catch (error) {
+              Alert.alert('Error', error.response?.data?.message || 'Failed to cancel order');
+            } finally {
+              setIsProcessing(false);
+            }
+          }
+        }
+      ]
+    );
+  };
+
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -269,13 +297,25 @@ const AdminOrderDetailsScreen = ({ route, navigation }) => {
             ))}
           </View>
 
-          <TouchableOpacity
-            style={styles.updateStatusBtn}
-            onPress={() => setShowStatusModal(true)}
-          >
-            <Icon name="create-outline" size={20} color="#4F46E5" />
-            <Text style={styles.updateStatusText}>Update Status</Text>
-          </TouchableOpacity>
+          <View style={styles.statusButtonsRow}>
+            <TouchableOpacity
+              style={styles.updateStatusBtn}
+              onPress={() => setShowStatusModal(true)}
+            >
+              <Icon name="create-outline" size={20} color="#4F46E5" />
+              <Text style={styles.updateStatusText}>Update Status</Text>
+            </TouchableOpacity>
+
+            {!['delivered', 'cancelled', 'returned', 'refunded', 'completed'].includes(order.orderStatus) && (
+              <TouchableOpacity
+                style={[styles.updateStatusBtn, styles.cancelOrderBtn]}
+                onPress={handleCancelOrder}
+              >
+                <Icon name="close-circle-outline" size={20} color="#EF4444" />
+                <Text style={styles.cancelOrderText}>Cancel Order</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
 
         {/* Shiprocket Actions */}
@@ -415,7 +455,11 @@ const AdminOrderDetailsScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>Phone</Text>
-            <Text style={styles.infoValue}>{order.shippingAddress.phone}</Text>
+            <TouchableOpacity onPress={() => Linking.openURL(`tel:${order.shippingAddress.phone}`)}>
+              <Text style={[styles.infoValue, { color: '#4F46E5', textDecorationLine: 'underline' }]}>
+                {order.shippingAddress.phone}
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -668,6 +712,7 @@ const styles = StyleSheet.create({
   },
   timelineLineActive: { backgroundColor: '#4F46E5' },
   updateStatusBtn: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -677,7 +722,20 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#4F46E5'
   },
-  updateStatusText: { fontSize: 15, fontWeight: '600', color: '#4F46E5' },
+  updateStatusText: { fontSize: 13, fontWeight: '700', color: '#4F46E5' },
+  statusButtonsRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 8
+  },
+  cancelOrderBtn: {
+    borderColor: '#EF4444',
+  },
+  cancelOrderText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#EF4444'
+  },
   actionCard: {
     flexDirection: 'row',
     alignItems: 'center',

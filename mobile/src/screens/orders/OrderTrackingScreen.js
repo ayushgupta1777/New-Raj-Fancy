@@ -271,7 +271,7 @@ const OrderTrackingScreen = ({ route, navigation }) => {
             
             <TouchableOpacity 
                 style={styles.supportBtn}
-                onPress={() => Linking.openURL('tel:919999999999')} // Replace with real support
+                onPress={() => Linking.openURL('tel:+917240992230')}
             >
                 <Icon name="headset-outline" size={20} color="#4F46E5" />
                 <Text style={styles.supportBtnText}>Contact Support</Text>

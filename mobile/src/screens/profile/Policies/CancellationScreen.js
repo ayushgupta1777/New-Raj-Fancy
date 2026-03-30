@@ -9,172 +9,67 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const CancellationScreen = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
-      {/* Header removed and moved to Navigator */}
-      <View style={{ height: 20 }} />
+      <View style={styles.header}>
+        <Icon name="cash-outline" size={48} color="#4F46E5" />
+        <Text style={styles.title}>Cancellation & Refund</Text>
+        <Text style={styles.subtitle}>Effective Date: January 30, 2026</Text>
+      </View>
 
       <View style={styles.content}>
-        {/* Quick Actions */}
-        <View style={styles.quickActions}>
-          <TouchableOpacity
-            style={styles.actionCard}
-            onPress={() => navigation.navigate('Orders')}
-          >
-            <Icon name="close-circle" size={28} color="#FF3B30" />
-            <Text style={styles.actionTitle}>Cancel Order</Text>
-            <Text style={styles.actionSubtitle}>View orders</Text>
-          </TouchableOpacity>
+        <Section
+          icon="close-circle"
+          iconColor="#EF4444"
+          title="1. Cancellation Policy"
+          content="• Orders can be canceled within 24 hours of placement.
+• Cancellation is strictly not allowed once the order has been dispatched/shipped."
+        />
 
-          <TouchableOpacity
-            style={styles.actionCard}
-            onPress={() => navigation.navigate('Support')}
-          >
-            <Icon name="help-circle" size={28} color="#0A84FF" />
-            <Text style={styles.actionTitle}>Need Help?</Text>
-            <Text style={styles.actionSubtitle}>Contact support</Text>
-          </TouchableOpacity>
-        </View>
+        <Section
+          icon="return-down-back"
+          iconColor="#3B82F6"
+          title="2. Return Policy"
+          content="• Return requests must be raised within 48 hours of delivery.
+• Returns are only accepted if:
+  - You receive a damaged product
+  - The wrong item was delivered"
+        />
 
-        {/* Cancellation Policy */}
-        <View style={styles.policySection}>
-          <View style={styles.policySectionHeader}>
-            <Icon name="close-circle-outline" size={24} color="#FF3B30" />
-            <Text style={styles.policySectionTitle}>Order Cancellation</Text>
-          </View>
+        <Section
+          icon="cash"
+          iconColor="#10B981"
+          title="3. Refund Policy"
+          content="• Approved refunds are processed within 5–7 business days.
+• The refund will be credited back via the original payment method used during purchase."
+        />
 
-          <InfoCard
-            icon="time-outline"
-            iconColor="#34C759"
-            title="Before Shipment"
-            content="You can cancel your order anytime before it's shipped. Simply go to 'My Orders' and click on 'Cancel Order'. Your refund will be processed within 2-3 business days."
-          />
+        <Section
+          icon="bag-remove"
+          iconColor="#F59E0B"
+          title="4. Non-Returnable Items"
+          content="• Used or worn jewellery
+• Customized or personalized orders
+• Items returned without their original packaging or tags"
+        />
 
-          <InfoCard
-            icon="cube-outline"
-            iconColor="#FF9500"
-            title="After Shipment"
-            content="Once your order is shipped, cancellation is not available. However, you can refuse the delivery or return the product after delivery as per our return policy."
-          />
+        <Section
+          icon="people"
+          iconColor="#6366F1"
+          title="5. Reseller Refund Terms"
+          content="• All refunds will be processed directly to the original buyer.
+• Resellers are responsible for coordinating and settling refunds with their own customers independently."
+        />
 
-          <InfoCard
-            icon="ban-outline"
-            iconColor="#6B7280"
-            title="Non-Cancellable Items"
-            content="Certain items like perishable goods, intimate wear, custom-made products, and sale items cannot be cancelled or returned. Check product details before ordering."
-          />
-        </View>
-
-        {/* Return Policy */}
-        <View style={styles.policySection}>
-          <View style={styles.policySectionHeader}>
-            <Icon name="arrow-undo-outline" size={24} color="#0A84FF" />
-            <Text style={styles.policySectionTitle}>Return Policy</Text>
-          </View>
-
-          <InfoCard
-            icon="calendar-outline"
-            iconColor="#5E5CE6"
-            title="7-Day Return Window"
-            content="Most products can be returned within 7 days of delivery. The product must be unused, in original packaging with all tags and accessories intact."
-          />
-
-          <InfoCard
-            icon="checkmark-done-outline"
-            iconColor="#10B981"
-            title="How to Return"
-            content="Go to 'My Orders', select the item, and click 'Return'. Schedule a pickup or drop it at our nearest partner location. Return shipping is free for defective products."
-          />
-
-          <InfoCard
-            icon="shield-checkmark-outline"
-            iconColor="#0A84FF"
-            title="Quality Issues"
-            content="If you receive a damaged or defective product, contact us within 48 hours with photos. We'll arrange immediate replacement or full refund including shipping charges."
-          />
-        </View>
-
-        {/* Refund Process */}
-        <View style={styles.policySection}>
-          <View style={styles.policySectionHeader}>
-            <Icon name="wallet-outline" size={24} color="#10B981" />
-            <Text style={styles.policySectionTitle}>Refund Process</Text>
-          </View>
-
-          <Timeline
-            steps={[
-              {
-                icon: 'checkmark-circle',
-                title: 'Return Approved',
-                description: 'Within 1-2 business days after receiving returned item',
-                color: '#10B981'
-              },
-              {
-                icon: 'sync',
-                title: 'Refund Initiated',
-                description: 'Processing starts immediately after approval',
-                color: '#0A84FF'
-              },
-              {
-                icon: 'cash',
-                title: 'Money Credited',
-                description: '2-7 business days depending on payment method',
-                color: '#34C759'
-              }
-            ]}
-          />
-
-          <View style={styles.refundMethods}>
-            <Text style={styles.refundMethodsTitle}>Refund Methods:</Text>
-            <RefundMethod
-              icon="card"
-              method="Credit/Debit Card"
-              time="5-7 business days"
-            />
-            <RefundMethod
-              icon="phone-portrait"
-              method="UPI / Digital Wallet"
-              time="2-4 business days"
-            />
-            <RefundMethod
-              icon="wallet"
-              method="Net Banking"
-              time="3-5 business days"
-            />
-            <RefundMethod
-              icon="cash"
-              method="Cash on Delivery"
-              time="Bank transfer in 5-7 days"
-            />
-          </View>
-        </View>
-
-        {/* Important Notes */}
-        <View style={styles.notesSection}>
-          <View style={styles.notesSectionHeader}>
-            <Icon name="alert-circle" size={24} color="#FF9500" />
-            <Text style={styles.notesSectionTitle}>Important Notes</Text>
-          </View>
-
-          <View style={styles.notesList}>
-            <NoteItem text="Refunds are processed to the original payment method" />
-            <NoteItem text="Shipping charges are non-refundable unless product is defective" />
-            <NoteItem text="Exchange is subject to product availability" />
-            <NoteItem text="Return pickup is free for orders above ₹499" />
-            <NoteItem text="Gift cards and promotional credits cannot be refunded" />
-          </View>
-        </View>
-
-        {/* Contact Support */}
         <TouchableOpacity
           style={styles.supportButton}
           onPress={() => navigation.navigate('Support')}
         >
           <Icon name="chatbubbles" size={20} color="#fff" />
-          <Text style={styles.supportButtonText}>Contact Support Team</Text>
+          <Text style={styles.supportButtonText}>Need Help with a Return?</Text>
         </TouchableOpacity>
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>
-            We're committed to making returns and refunds as smooth as possible. Your satisfaction is our priority! 🌟
+            We're committed to making your experience as smooth as possible. Your satisfaction is our priority! 🌟
           </Text>
         </View>
       </View>

@@ -9,74 +9,75 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const TermsScreen = () => {
   return (
     <ScrollView style={styles.container}>
-      {/* Header removed and moved to Navigator */}
-      <View style={{ height: 20 }} />
+      <View style={styles.header}>
+        <Icon name="document-text-outline" size={48} color="#4F46E5" />
+        <Text style={styles.title}>Terms & Conditions</Text>
+        <Text style={styles.subtitle}>Effective Date: January 30, 2026</Text>
+      </View>
 
       <View style={styles.content}>
         <Section
           number="1"
-          title="Acceptance of Terms"
-          content="By accessing and using this application, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service."
+          title="Business Information"
+          content="Business Name: New Raj Fancy
+Address: Infront of Balaji Parisar, Beside Sai Astha Marriage Garden, Gotegaon, Narsinghpur, M.P 487118
+Contact: 07649830348
+Email: Newrajfancystore@gmail.com"
         />
 
         <Section
           number="2"
-          title="Use License"
-          content="Permission is granted to temporarily download one copy of the materials on our application for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title."
+          title="Use of Platform"
+          content="By accessing our website or mobile application, you agree to use the platform only for lawful purposes. Any misuse, fraud, or unauthorized activity may lead to immediate account suspension or termination."
         />
 
         <Section
           number="3"
-          title="User Account"
-          content="When you create an account with us, you must provide information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account."
+          title="Product & Pricing"
+          content="• Prices are inclusive of GST as per Government regulations
+• Product images are for representation purposes; slight variations in color or texture may occur
+• Prices are subject to change without prior notice based on market conditions"
         />
 
         <Section
           number="4"
-          title="Purchases & Pricing"
-          content="All purchases through our application are subject to product availability. We reserve the right to limit quantities purchased per person, per household or per order. Prices are subject to change without notice."
+          title="Orders & Acceptance"
+          content="Orders are confirmed only after successful payment verification. We reserve the right to cancel orders due to stock issues, pricing errors, or suspicious activity detected by our security systems."
         />
 
         <Section
           number="5"
-          title="User Conduct"
-          content="You agree not to use the application to: violate any laws, infringe upon intellectual property rights, transmit harmful code, impersonate any person or entity, or interfere with the application's functionality."
+          title="Reseller Terms"
+          content="• Resellers can sell products using our catalog without holding physical inventory
+• Profit margins are set by resellers at their own discretion
+• New Raj Fancy is not responsible for reseller customer communication or pricing differences
+• Misleading customers or making false commitments may lead to immediate account termination"
         />
 
         <Section
           number="6"
-          title="Intellectual Property"
-          content="All content included in or made available through our application, such as text, graphics, logos, images, and software, is the property of our company or our content suppliers and protected by copyright laws."
+          title="GST Compliance"
+          content="• GST will be applied as per Government of India regulations
+• GST invoices will be provided upon request for business accounts
+• Resellers are solely responsible for their own GST compliance if selling independently"
         />
 
         <Section
           number="7"
-          title="Limitation of Liability"
-          content="In no event shall our company be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use our application."
+          title="Intellectual Property"
+          content="All logos, images, product descriptions, and application content belong to New Raj Fancy. Unauthorized reuse, reproduction, or distribution is strictly prohibited without explicit permission."
         />
 
         <Section
           number="8"
-          title="Account Termination"
-          content="We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms."
-        />
-
-        <Section
-          number="9"
-          title="Changes to Terms"
-          content="We reserve the right to modify or replace these Terms at any time. We will provide notice of any changes by posting the new Terms on this page. Your continued use of the application after such modifications will constitute acknowledgment."
-        />
-
-        <Section
-          number="10"
-          title="Contact Information"
-          content="If you have any questions about these Terms, please contact us through our support channels available in the app or via email at support@yourcompany.com"
+          title="Limitation of Liability"
+          content="New Raj Fancy is not liable for indirect damages, delivery delays caused by third-party logistics, or business losses caused by platform downtime or third-party service interruptions."
         />
 
         <View style={styles.footer}>
           <Icon name="shield-checkmark" size={24} color="#10B981" />
           <Text style={styles.footerText}>
-            By using our app, you acknowledge that you have read and understood these terms.
+            By using New Raj Fancy, you acknowledge that you have read and understood these terms.
           </Text>
         </View>
       </View>

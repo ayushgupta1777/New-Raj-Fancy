@@ -30,15 +30,15 @@ const ContactUsScreen = () => {
   };
 
   const handleCall = () => {
-    Linking.openURL('tel:+919876543210');
+    Linking.openURL('tel:+917240992230');
   };
 
   const handleEmail = () => {
-    Linking.openURL('mailto:support@yourcompany.com');
+    Linking.openURL('mailto:newrajfancystore@gmail.com');
   };
 
   const handleWhatsApp = () => {
-    Linking.openURL('https://wa.me/919876543210');
+    Linking.openURL('https://wa.me/917240992230');
   };
 
   const handleSocialLink = (url) => {
@@ -58,8 +58,8 @@ const ContactUsScreen = () => {
               <Icon name="call" size={28} color="#10B981" />
             </View>
             <Text style={styles.contactCardTitle}>Call Us</Text>
-            <Text style={styles.contactCardValue}>+91 98765 43210</Text>
-            <Text style={styles.contactCardHours}>Mon-Sat: 9AM-7PM</Text>
+            <Text style={styles.contactCardValue}>+91 724 099 2230</Text>
+            <Text style={styles.contactCardHours}>Mon-Sat: 9AM-8PM</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.contactCard} onPress={handleEmail}>
@@ -67,8 +67,8 @@ const ContactUsScreen = () => {
               <Icon name="mail" size={28} color="#0A84FF" />
             </View>
             <Text style={styles.contactCardTitle}>Email Us</Text>
-            <Text style={styles.contactCardValue}>support@</Text>
-            <Text style={styles.contactCardValue}>yourcompany.com</Text>
+            <Text style={styles.contactCardValue}>newrajfancystore@</Text>
+            <Text style={styles.contactCardValue}>gmail.com</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.contactCard} onPress={handleWhatsApp}>
@@ -81,87 +81,10 @@ const ContactUsScreen = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Contact Form */}
-        <View style={styles.formSection}>
-          <View style={styles.formHeader}>
-            <Icon name="document-text" size={24} color="#4F46E5" />
-            <Text style={styles.formTitle}>Send us a Message</Text>
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Full Name *</Text>
-            <View style={styles.inputWrapper}>
-              <Icon name="person-outline" size={20} color="#6B7280" />
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your name"
-                value={formData.name}
-                onChangeText={(text) => setFormData({ ...formData, name: text })}
-              />
-            </View>
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Email Address *</Text>
-            <View style={styles.inputWrapper}>
-              <Icon name="mail-outline" size={20} color="#6B7280" />
-              <TextInput
-                style={styles.input}
-                placeholder="your.email@example.com"
-                value={formData.email}
-                onChangeText={(text) => setFormData({ ...formData, email: text })}
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-            </View>
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Phone Number</Text>
-            <View style={styles.inputWrapper}>
-              <Icon name="call-outline" size={20} color="#6B7280" />
-              <TextInput
-                style={styles.input}
-                placeholder="10-digit mobile number"
-                value={formData.phone}
-                onChangeText={(text) => setFormData({ ...formData, phone: text })}
-                keyboardType="phone-pad"
-                maxLength={10}
-              />
-            </View>
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Subject</Text>
-            <View style={styles.inputWrapper}>
-              <Icon name="bookmarks-outline" size={20} color="#6B7280" />
-              <TextInput
-                style={styles.input}
-                placeholder="What's this about?"
-                value={formData.subject}
-                onChangeText={(text) => setFormData({ ...formData, subject: text })}
-              />
-            </View>
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Message *</Text>
-            <TextInput
-              style={[styles.input, styles.textArea]}
-              placeholder="Tell us how we can help you..."
-              value={formData.message}
-              onChangeText={(text) => setFormData({ ...formData, message: text })}
-              multiline
-              numberOfLines={6}
-              textAlignVertical="top"
-            />
-          </View>
-
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Icon name="send" size={20} color="#fff" />
-            <Text style={styles.submitButtonText}>Send Message</Text>
-          </TouchableOpacity>
-        </View>
+        {/* Contact Form Hidden As Requested */}
+        {/* <View style={styles.formSection}>
+          ... Form hidden ...
+        </View> */}
 
         {/* Office Address */}
         <View style={styles.addressSection}>
@@ -174,10 +97,17 @@ const ContactUsScreen = () => {
             <View style={styles.addressRow}>
               <Icon name="business" size={20} color="#6B7280" />
               <Text style={styles.addressText}>
-                Corporate Office{'\n'}
-                123, Tech Park, MG Road{'\n'}
-                Bangalore, Karnataka - 560001{'\n'}
-                India
+                New Raj Fancy Store,{'\n'}
+                Ward no 15, Near Balaji Dham Colony,{'\n'}
+                Sai Aastha Garden Ke Piche, Narsinghpur,{'\n'}
+                Madhya Pradesh, India, 487118
+              </Text>
+            </View>
+
+            <View style={styles.addressRow}>
+              <Icon name="person-circle" size={20} color="#6B7280" />
+              <Text style={styles.addressText}>
+                Warehouse SPOC: New Raj Fancy | 9343338599
               </Text>
             </View>
 
@@ -238,7 +168,7 @@ const ContactUsScreen = () => {
 
             <TouchableOpacity
               style={[styles.socialButton, { backgroundColor: '#E4405F15' }]}
-              onPress={() => handleSocialLink('https://instagram.com')}
+              onPress={() => handleSocialLink('https://www.instagram.com/new_raj_fancy?igsh=MTZnaW9zbnVqMjR1ZQ==')}
             >
               <Icon name="logo-instagram" size={24} color="#E4405F" />
             </TouchableOpacity>

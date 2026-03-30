@@ -3,10 +3,10 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
-const CustomHeader = ({ 
-  title, 
+const CustomHeader = ({
+  title,
   subtitle,
-  showBack = true, 
+  showBack = true,
   showCart = false,
   showSearch = false,
   cartCount = 0,
@@ -20,7 +20,7 @@ const CustomHeader = ({
     <View style={[styles.header, { backgroundColor }]}>
       <View style={styles.headerLeft}>
         {showBack && (
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation.goBack()}
             activeOpacity={0.7}
@@ -28,7 +28,7 @@ const CustomHeader = ({
             <Icon name="arrow-back" size={24} color={textColor} />
           </TouchableOpacity>
         )}
-        
+
         <View style={styles.titleContainer}>
           <Text style={[styles.headerTitle, { color: textColor }]}>{title}</Text>
           {subtitle && (
@@ -41,7 +41,7 @@ const CustomHeader = ({
 
       <View style={styles.headerRight}>
         {showSearch && (
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.headerIcon}
             onPress={() => navigation.navigate('Search')}
             activeOpacity={0.7}
@@ -51,7 +51,7 @@ const CustomHeader = ({
         )}
 
         {showCart && (
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.headerIcon}
             onPress={() => navigation.navigate('Cart', { screen: 'CartMain' })}
             activeOpacity={0.7}

@@ -9,92 +9,48 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const PrivacyScreen = () => {
   return (
     <ScrollView style={styles.container}>
-      {/* Header removed and moved to Navigator */}
-      <View style={{ height: 20 }} />
+      <View style={styles.header}>
+        <Icon name="lock-closed-outline" size={48} color="#4F46E5" />
+        <Text style={styles.title}>Privacy Policy</Text>
+        <Text style={styles.subtitle}>Effective Date: January 30, 2026</Text>
+      </View>
 
       <View style={styles.content}>
         <Section
           icon="information-circle"
           iconColor="#0A84FF"
-          title="Information We Collect"
-          content="We collect information that you provide directly to us, including your name, email address, phone number, delivery address, and payment information. We also collect information about your device, usage patterns, and browsing behavior within our app."
+          title="1. Information Collected"
+          content="• Name, phone number, and email address
+• Shipping and billing address details
+• Order history and payment transaction information"
         />
 
         <Section
           icon="compass"
           iconColor="#5E5CE6"
-          title="How We Use Your Information"
-          content="We use the information we collect to: process your orders and payments, provide customer support, send you updates about your orders, improve our services, personalize your experience, and send promotional communications (with your consent)."
+          title="2. Usage of Data"
+          content="We use your data for order processing, delivery, and customer support. With your explicit consent, we may send marketing communications via WhatsApp, SMS, or Email."
         />
 
         <Section
           icon="share-social"
           iconColor="#FF9500"
-          title="Information Sharing"
-          content="We do not sell your personal information. We may share your information with: service providers who help us operate our business, payment processors, delivery partners, and law enforcement when required by law. All third parties are contractually obligated to protect your data."
+          title="3. Data Sharing"
+          content="We only share data with trusted delivery partners and secure payment gateways. Data may also be shared with legal authorities if strictly required under applicable Indian laws."
         />
 
         <Section
-          icon="lock-closed"
+          icon="shield-checkmark"
           iconColor="#FF3B30"
-          title="Data Security"
-          content="We implement industry-standard security measures to protect your personal information. This includes encryption of sensitive data, secure servers, regular security audits, and restricted access to personal information. However, no method of transmission over the internet is 100% secure."
-        />
-
-        <Section
-          icon="card"
-          iconColor="#34C759"
-          title="Payment Information"
-          content="Your payment information is processed securely through PCI-compliant payment gateways. We do not store complete credit card details on our servers. Payment processors may retain certain payment information in accordance with their own privacy policies."
-        />
-
-        <Section
-          icon="analytics"
-          iconColor="#AF52DE"
-          title="Cookies & Tracking"
-          content="We use cookies and similar tracking technologies to enhance your experience, remember your preferences, and analyze usage patterns. You can control cookie settings through your device preferences, though some features may not function properly without them."
+          title="4. Data Security"
+          content="We implement industry-standard security practices and encryption to protect your sensitive personal and financial data from unauthorized access."
         />
 
         <Section
           icon="people"
-          iconColor="#0A84FF"
-          title="Your Rights"
-          content="You have the right to: access your personal data, request corrections to your data, request deletion of your account and data, opt-out of marketing communications, and export your data. Contact our support team to exercise these rights."
-        />
-
-        <Section
-          icon="location"
-          iconColor="#FF9500"
-          title="Location Data"
-          content="With your permission, we may collect and use your location data to provide location-based services such as store locators, delivery tracking, and personalized recommendations. You can disable location services at any time in your device settings."
-        />
-
-        <Section
-          icon="notifications"
-          iconColor="#FF3B30"
-          title="Push Notifications"
-          content="We may send you push notifications about order updates, special offers, and other relevant information. You can manage notification preferences in your account settings or device settings at any time."
-        />
-
-        <Section
-          icon="time"
-          iconColor="#6B7280"
-          title="Data Retention"
-          content="We retain your personal information for as long as necessary to provide our services, comply with legal obligations, resolve disputes, and enforce our agreements. When data is no longer needed, it is securely deleted or anonymized."
-        />
-
-        <Section
-          icon="people-circle"
-          iconColor="#5E5CE6"
-          title="Children's Privacy"
-          content="Our services are not intended for children under 13 years of age. We do not knowingly collect personal information from children. If you believe we have collected information from a child, please contact us immediately."
-        />
-
-        <Section
-          icon="refresh"
           iconColor="#34C759"
-          title="Policy Updates"
-          content="We may update this Privacy Policy from time to time. We will notify you of significant changes via email or app notification. Your continued use of our services after such modifications constitutes your acknowledgment of the modified policy."
+          title="5. User Rights"
+          content="As per Indian data protection principles, you may request access to your data, corrections of inaccuracies, or complete deletion by contacting our privacy team."
         />
 
         <View style={styles.contactBox}>
@@ -102,17 +58,17 @@ const PrivacyScreen = () => {
           <View style={styles.contactContent}>
             <Text style={styles.contactTitle}>Questions About Privacy?</Text>
             <Text style={styles.contactText}>
-              Contact our privacy team at privacy@yourcompany.com
+              Contact our privacy team at Newrajfancystore@gmail.com
             </Text>
           </View>
         </View>
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>
-            Last updated: December 2024
+            Last updated: January 30, 2026
           </Text>
           <Text style={styles.footerSubtext}>
-            We are committed to protecting your privacy and ensuring transparency in how we handle your data.
+            At New Raj Fancy, we are committed to following applicable Indian data protection principles for your safety.
           </Text>
         </View>
       </View>
