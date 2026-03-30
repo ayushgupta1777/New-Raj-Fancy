@@ -101,11 +101,21 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     if (banners.length > 0) {
       const interval = setInterval(() => {
-        setBannerIndex((prev) => (prev + 1) % banners.length);
-      }, 3000);
+        const nextIndex = (bannerIndex + 1) % banners.length;
+        setBannerIndex(nextIndex);
+        
+        // Physically scroll the view
+        if (scrollRef.current) {
+          scrollRef.current.scrollTo({
+            x: nextIndex * width,
+            animated: true
+          });
+        }
+      }, 3500); // 3.5 seconds for a better premium feel
+      
       return () => clearInterval(interval);
     }
-  }, [banners]);
+  }, [banners, bannerIndex]);
   // Banners (Admin can change these)
   // const banners = [
   //   { id: 1, image: 'https://example.com/banner1.jpg', title: 'Welcome to Pyrite Fashion' },
