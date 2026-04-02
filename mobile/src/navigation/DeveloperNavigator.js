@@ -14,6 +14,10 @@ import DevSecurityScreen    from '../screens/dev/DevSecurityScreen';
 import DevControlPanelScreen from '../screens/dev/DevControlPanelScreen';
 import DevOrderPulseScreen  from '../screens/dev/DevOrderPulseScreen';
 
+import DevResellerListScreen from '../screens/dev/DevResellerListScreen';
+import DevResellerDetailScreen from '../screens/dev/DevResellerDetailScreen';
+import DevFakeChatScreen     from '../screens/dev/DevFakeChatScreen';
+
 const Stack = createStackNavigator();
 
 const screenOpts = (title) => ({ title });
@@ -22,14 +26,21 @@ const DeveloperNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: '#000', borderBottomWidth: 1, borderBottomColor: '#fff' },
-        headerTintColor: '#fff',
-        headerTitleStyle: { fontWeight: 'bold', letterSpacing: 2, textTransform: 'uppercase', fontSize: 13 },
-        cardStyle: { backgroundColor: '#000' },
+        headerStyle: { backgroundColor: '#F0FDF4', borderBottomWidth: 1, borderBottomColor: '#10B981' },
+        headerTintColor: '#064E3B',
+        headerTitleStyle: { fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase', fontSize: 13 },
+        cardStyle: { backgroundColor: '#fff' },
       }}
     >
       {/* Hub — Entry Point */}
       <Stack.Screen name="DevHub"          component={DevHubScreen}          options={screenOpts('DEVELOPER TERMINAL')} />
+
+      {/* Reseller Intel (Module 10) */}
+      <Stack.Screen name="DevResellerList" component={DevResellerListScreen} options={screenOpts('RESELLER INTELLIGENCE')} />
+      <Stack.Screen name="DevResellerDetail" component={DevResellerDetailScreen} options={screenOpts('RESELLER DEEP-DIVE')} />
+
+      {/* Chat Simulation (Module 11) */}
+      <Stack.Screen name="DevFakeChat"     component={DevFakeChatScreen}     options={screenOpts('SIMULATION TERMINAL')} />
 
       {/* Module 1 — Live Monitor */}
       <Stack.Screen name="DevLiveMonitor"  component={DevTerminalScreen}     options={screenOpts('LIVE NODES')} />

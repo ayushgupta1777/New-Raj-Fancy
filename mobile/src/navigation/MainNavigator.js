@@ -336,7 +336,7 @@ import { BASE_URL } from '../services/api';
 import UpgradeModal from '../components/common/UpgradeModal';
 
 // APP VERSION
-const CURRENT_VERSION = '0.0.4';
+const CURRENT_VERSION = '1.0.4';
 
 // MAIN NAVIGATOR
 const MainNavigator = () => {

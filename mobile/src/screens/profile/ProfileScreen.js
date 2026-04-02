@@ -391,7 +391,7 @@ const ProfileScreen = ({ navigation }) => {
       <View style={styles.appInfoSection}>
         <View style={styles.appInfoCard}>
           <Icon name="information-circle-outline" size={20} color="#6B7280" />
-          <Text style={styles.appInfoText}>App Version: 1.0.0</Text>
+          <Text style={styles.appInfoText}>App Version: 1.0.4</Text>
         </View>
         <AdsngrowFooter marginTop={10} paddingBottom={0} />
       </View>
