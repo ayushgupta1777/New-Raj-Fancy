@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder } from '../../redux/slices/orderSlice';
-import { fetchCart } from '../../redux/slices/cartSlice';
+import { fetchCart, updateCartItem } from '../../redux/slices/cartSlice';
 import Icon from 'react-native-vector-icons/Ionicons';
 import api, { getImageUrl } from '../../services/api';
 
@@ -29,6 +29,9 @@ const CheckoutScreen = ({ navigation }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isLoadingAddresses, setIsLoadingAddresses] = useState(true);
+
+  const [editingId, setEditingId] = useState(null);
+  const [editPrice, setEditPrice] = useState('0');
 
   // Coupon State
   const [couponCode, setCouponCode] = useState('');
@@ -107,10 +110,26 @@ const CheckoutScreen = ({ navigation }) => {
     }
   }, [items]);
 
+  const baseTotalPrice = items?.reduce((sum, item) => sum + ((item.basePrice || item.finalPrice - (item.resellPrice || 0)) * item.quantity), 0) || 0;
+
   const shippingCost = totalPrice > 500 ? 0 : 50;
   const tax = Math.round(totalPrice * 0.03);
   const discount = appliedCoupon ? appliedCoupon.appliedDiscount : 0;
   const finalTotal = totalPrice + shippingCost + tax - discount;
+
+  const handleSaveResellPrice = async (itemId) => {
+    try {
+      const item = items.find(i => i._id === itemId);
+      await dispatch(updateCartItem({
+        itemId,
+        quantity: item.quantity,
+        resellPrice: parseFloat(editPrice) || 0
+      })).unwrap();
+      setEditingId(null);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to update margin. Please try again.');
+    }
+  };
 
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) {
@@ -122,7 +141,7 @@ const CheckoutScreen = ({ navigation }) => {
       setIsValidatingCoupon(true);
       const response = await api.post('/coupons/validate', {
         code: couponCode,
-        orderAmount: totalPrice
+        orderAmount: baseTotalPrice
       });
 
       if (response.data.success) {
@@ -545,26 +564,78 @@ const CheckoutScreen = ({ navigation }) => {
             <ScrollView style={styles.modalContent}>
               <View style={styles.confirmSection}>
                 <Text style={styles.confirmLabel}>Items ({items.length})</Text>
-                {items.map((item) => (
-                  <View key={item._id} style={styles.confirmItem}>
-                    <View style={styles.confirmItemImageContainer}>
-                      <Image
-                        source={{ uri: item.product?.images?.[0] ? getImageUrl(item.product.images[0]) : 'https://via.placeholder.com/150' }}
-                        style={styles.confirmItemImage}
-                        resizeMode="cover"
-                      />
+                {items.map((item) => {
+                  const isEditing = editingId === item._id;
+                  const itemBasePrice = item.basePrice || (item.finalPrice - (item.resellPrice || 0));
+                  
+                  let itemDiscount = 0;
+                  if (appliedCoupon && baseTotalPrice > 0) {
+                    const proportion = (itemBasePrice * item.quantity) / baseTotalPrice;
+                    itemDiscount = appliedCoupon.appliedDiscount * proportion;
+                  }
+                  const effectivePrice = Math.max(0, (itemBasePrice * item.quantity) - itemDiscount);
+
+                  return (
+                  <View key={item._id} style={[styles.confirmItem, { flexDirection: 'column', alignItems: 'stretch' }]}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+                      <View style={styles.confirmItemImageContainer}>
+                        <Image
+                          source={{ uri: item.product?.images?.[0] ? getImageUrl(item.product.images[0]) : 'https://via.placeholder.com/150' }}
+                          style={styles.confirmItemImage}
+                          resizeMode="cover"
+                        />
+                      </View>
+                      <View style={[styles.confirmItemInfo, { marginLeft: 12 }]}>
+                        <Text style={styles.confirmItemName} numberOfLines={1}>
+                          {item.product?.title}
+                        </Text>
+                        <Text style={styles.confirmItemQty}>Qty: {item.quantity}</Text>
+                        
+                        {user?.resellerApplication?.status === 'approved' && appliedCoupon && (
+                           <Text style={{ fontSize: 11, color: '#10B981', marginTop: 2 }}>
+                             Coupon Discount: -₹{Math.round(itemDiscount)} (Effective Base: ₹{Math.round(effectivePrice)})
+                           </Text>
+                        )}
+                      </View>
+                      <Text style={styles.confirmItemPrice}>₹{item.finalPrice * item.quantity}</Text>
                     </View>
-                    <View style={styles.confirmItemInfo}>
-                      <Text style={styles.confirmItemName} numberOfLines={1}>
-                        {item.product?.title}
-                      </Text>
-                      <Text style={styles.confirmItemQty}>Qty: {item.quantity}</Text>
-                    </View>
-                    <Text style={styles.confirmItemPrice}>
-                      ₹{item.finalPrice * item.quantity}
-                    </Text>
+
+                    {user?.resellerApplication?.status === 'approved' && (
+                      <View style={{ marginTop: 8, paddingLeft: 52 }}>
+                        {isEditing ? (
+                          <View style={{ flexDirection: 'row', gap: 6 }}>
+                            <TextInput
+                              style={{ flex: 1, borderWidth: 1, borderColor: '#4F46E5', borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4, fontSize: 12 }}
+                              placeholder="Margin"
+                              value={editPrice}
+                              onChangeText={setEditPrice}
+                              keyboardType="number-pad"
+                            />
+                            <TouchableOpacity
+                              onPress={() => handleSaveResellPrice(item._id)}
+                              style={{ backgroundColor: '#4F46E5', width: 32, height: 32, borderRadius: 6, justifyContent: 'center', alignItems: 'center' }}
+                            >
+                              <Icon name="checkmark" size={16} color="#fff" />
+                            </TouchableOpacity>
+                          </View>
+                        ) : (
+                          <TouchableOpacity
+                            onPress={() => {
+                              setEditingId(item._id);
+                              setEditPrice((item.resellPrice || 0).toString());
+                            }}
+                            style={{ flexDirection: 'row', alignItems: 'center', gap: 4, paddingVertical: 4, paddingHorizontal: 8, backgroundColor: '#EEF2FF', borderRadius: 6, alignSelf: 'flex-start' }}
+                          >
+                            <Icon name="add-outline" size={14} color="#4F46E5" />
+                            <Text style={{ fontSize: 11, color: '#4F46E5', fontWeight: '600' }}>
+                              {item.resellPrice > 0 ? `+₹${item.resellPrice} margin applied` : 'Add margin'}
+                            </Text>
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    )}
                   </View>
-                ))}
+                )})}
               </View>
 
               <View style={styles.confirmSection}>

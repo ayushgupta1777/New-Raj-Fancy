@@ -1189,7 +1189,7 @@ const EnhancedOrderDetailsScreen = ({ route, navigation }) => {
                 <Text style={styles.itemQty}>Qty: {item.quantity}</Text>
                 <Text style={styles.itemPrice}>₹{item.finalPrice} each</Text>
                 {item.resellPrice > 0 && (
-                  <Text style={styles.resellerMarkup}>+₹{item.resellPrice} markup</Text>
+                  <Text style={styles.resellerMarkup}>+₹{item.resellPrice} margin</Text>
                 )}
               </View>
               <Text style={styles.itemTotal}>Subtotal: ₹{item.finalPrice * item.quantity}</Text>

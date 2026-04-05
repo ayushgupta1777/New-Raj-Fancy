@@ -12,8 +12,6 @@ const CartScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { items, totalPrice, isLoading } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
-  const [editingId, setEditingId] = useState(null);
-  const [editPrice, setEditPrice] = useState('0');
   const [updating, setUpdating] = useState(false);
 
   // Refresh cart when screen comes into focus
@@ -43,20 +41,6 @@ const CartScreen = ({ navigation }) => {
       console.error('Update quantity error:', error);
     } finally {
       setTimeout(() => setUpdating(false), 500);
-    }
-  };
-
-  const handleSaveResellPrice = async (itemId) => {
-    try {
-      const item = items.find(i => i._id === itemId);
-      await dispatch(updateCartItem({
-        itemId,
-        quantity: item.quantity,
-        resellPrice: parseFloat(editPrice) || 0
-      })).unwrap();
-      setEditingId(null);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to update price. Please try again.');
     }
   };
 
@@ -93,7 +77,6 @@ const CartScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     if (!item.product) return null;
-    const isEditing = editingId === item._id;
 
     return (
       <View style={styles.itemCard}>
@@ -101,41 +84,6 @@ const CartScreen = ({ navigation }) => {
         <View style={styles.content}>
           <Text style={styles.title} numberOfLines={2}>{item.product.title}</Text>
           <Text style={styles.price}>₹{item.finalPrice}</Text>
-
-          {user?.resellerApplication?.status === 'approved' && (
-            <>
-              {isEditing ? (
-                <View style={styles.editBox}>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Markup"
-                    value={editPrice}
-                    onChangeText={setEditPrice}
-                    keyboardType="number-pad"
-                  />
-                  <TouchableOpacity
-                    onPress={() => handleSaveResellPrice(item._id)}
-                    style={styles.saveBtn}
-                  >
-                    <Icon name="checkmark" size={16} color="#fff" />
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <TouchableOpacity
-                  onPress={() => {
-                    setEditingId(item._id);
-                    setEditPrice((item.resellPrice || 0).toString());
-                  }}
-                  style={styles.addMarkupBtn}
-                >
-                  <Icon name="add-outline" size={14} color="#4F46E5" />
-                  <Text style={styles.addMarkupText}>
-                    {item.resellPrice > 0 ? `+₹${item.resellPrice}` : 'Add markup'}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </>
-          )}
 
           <View style={styles.bottom}>
             <View style={styles.qty}>
@@ -253,36 +201,6 @@ const styles = StyleSheet.create({
   content: { flex: 1 },
   title: { fontSize: 14, fontWeight: '600', color: '#111827' },
   price: { fontSize: 16, fontWeight: '700', color: '#4F46E5', marginTop: 4 },
-  addMarkupBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginTop: 6,
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    backgroundColor: '#EEF2FF',
-    borderRadius: 6,
-    alignSelf: 'flex-start'
-  },
-  addMarkupText: { fontSize: 11, color: '#4F46E5', fontWeight: '600' },
-  editBox: { flexDirection: 'row', gap: 6, marginTop: 6 },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#4F46E5',
-    borderRadius: 6,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    fontSize: 12
-  },
-  saveBtn: {
-    backgroundColor: '#4F46E5',
-    width: 32,
-    height: 32,
-    borderRadius: 6,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   bottom: {
     flexDirection: 'row',
     alignItems: 'center',

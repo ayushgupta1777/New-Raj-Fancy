@@ -16,7 +16,7 @@ const CancellationScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.content}>
-        <Section
+        <InfoCard
           icon="close-circle"
           iconColor="#EF4444"
           title="1. Cancellation Policy"
@@ -24,7 +24,7 @@ const CancellationScreen = ({ navigation }) => {
 • Cancellation is strictly not allowed once the order has been dispatched/shipped."
         />
 
-        <Section
+        <InfoCard
           icon="return-down-back"
           iconColor="#3B82F6"
           title="2. Return Policy"
@@ -34,7 +34,7 @@ const CancellationScreen = ({ navigation }) => {
   - The wrong item was delivered"
         />
 
-        <Section
+        <InfoCard
           icon="cash"
           iconColor="#10B981"
           title="3. Refund Policy"
@@ -42,7 +42,7 @@ const CancellationScreen = ({ navigation }) => {
 • The refund will be credited back via the original payment method used during purchase."
         />
 
-        <Section
+        <InfoCard
           icon="bag-remove"
           iconColor="#F59E0B"
           title="4. Non-Returnable Items"
@@ -51,7 +51,7 @@ const CancellationScreen = ({ navigation }) => {
 • Items returned without their original packaging or tags"
         />
 
-        <Section
+        <InfoCard
           icon="people"
           iconColor="#6366F1"
           title="5. Reseller Refund Terms"

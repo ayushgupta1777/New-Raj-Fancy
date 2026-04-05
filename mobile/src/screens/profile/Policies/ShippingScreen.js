@@ -152,6 +152,18 @@ const ShippingScreen = ({ navigation }) => {
   );
 };
 
+const Section = ({ icon, iconColor, title, content }) => (
+  <View style={styles.section}>
+    <View style={styles.sectionHeader}>
+      <View style={[styles.iconBadge, { backgroundColor: `${iconColor}15` }]}>
+        <Icon name={icon} size={20} color={iconColor} />
+      </View>
+      <Text style={styles.sectionTitle}>{title}</Text>
+    </View>
+    <Text style={styles.sectionContent}>{content}</Text>
+  </View>
+);
+
 const ShippingOption = ({ icon, iconColor, title, time, price, features, badge }) => (
   <View style={styles.shippingOption}>
     <View style={styles.optionHeader}>
@@ -301,7 +313,20 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E5E7EB'
   },
+  iconBadge: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12
+  },
   sectionTitle: { fontSize: 18, fontWeight: '700', color: '#111827', marginLeft: 10 },
+  sectionContent: {
+    fontSize: 14,
+    color: '#4B5563',
+    lineHeight: 22
+  },
   shippingOption: {
     padding: 12,
     backgroundColor: '#F9FAFB',
