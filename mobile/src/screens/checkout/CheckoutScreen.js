@@ -228,7 +228,7 @@ const CheckoutScreen = ({ navigation }) => {
       console.log('Creating order with data:', orderData);
 
       const result = await dispatch(createOrder(orderData)).unwrap();
-      
+
       // CRITICAL: Clear processing state before starting navigation to avoid UI conflicts
       setIsProcessing(false);
 
@@ -237,14 +237,14 @@ const CheckoutScreen = ({ navigation }) => {
         try {
           // Robust serialization to prevent navigation-reanimated crashes
           const navigationOrder = {
-             _id: String(result._id),
-             orderNo: String(result.orderNo),
-             total: Number(result.total),
-             paymentMethod: String(result.paymentMethod),
-             shippingAddress: {
-                city: result.shippingAddress?.city || 'City',
-                state: result.shippingAddress?.state || 'State'
-             }
+            _id: String(result._id),
+            orderNo: String(result.orderNo),
+            total: Number(result.total),
+            paymentMethod: String(result.paymentMethod),
+            shippingAddress: {
+              city: result.shippingAddress?.city || 'City',
+              state: result.shippingAddress?.state || 'State'
+            }
           };
 
           if (paymentMethod === 'cod') {
@@ -252,9 +252,9 @@ const CheckoutScreen = ({ navigation }) => {
             navigation.replace('OrderSuccess', { order: navigationOrder });
           } else {
             console.log('Navigating to PaymentGateway (Online)...');
-            navigation.navigate('PaymentGateway', { 
+            navigation.navigate('PaymentGateway', {
               order: navigationOrder,
-              amount: result.total 
+              amount: result.total
             });
           }
         } catch (navError) {
@@ -315,24 +315,47 @@ const CheckoutScreen = ({ navigation }) => {
         {/* Order Summary */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Order Summary ({items.length} items)</Text>
-          {items.slice(0, 3).map((item) => (
-            <View key={item._id} style={styles.itemRow}>
-              <View style={styles.itemImageContainer}>
-                <Image
-                  source={{ uri: item.product?.images?.[0] ? getImageUrl(item.product.images[0]) : 'https://via.placeholder.com/150' }}
-                  style={styles.itemImage}
-                  resizeMode="cover"
-                />
+          {items.slice(0, 3).map((item) => {
+            const itemBasePrice = item.basePrice || (item.finalPrice - (item.resellPrice || 0));
+            let itemDiscount = 0;
+            if (appliedCoupon && baseTotalPrice > 0) {
+              const proportion = (itemBasePrice * item.quantity) / baseTotalPrice;
+              itemDiscount = appliedCoupon.appliedDiscount * proportion;
+            }
+
+            return (
+              <View key={item._id} style={styles.itemRow}>
+                <View style={styles.itemImageContainer}>
+                  <Image
+                    source={{ uri: item.product?.images?.[0] ? getImageUrl(item.product.images[0]) : 'https://via.placeholder.com/150' }}
+                    style={styles.itemImage}
+                    resizeMode="cover"
+                  />
+                </View>
+                <View style={styles.itemInfo}>
+                  <Text style={styles.itemName} numberOfLines={1}>
+                    {item.product?.title}
+                  </Text>
+                  <Text style={styles.itemQuantity}>Qty: {item.quantity}</Text>
+                </View>
+
+                <View style={{ alignItems: 'flex-end' }}>
+                  {appliedCoupon && Math.round(itemDiscount) > 0 ? (
+                    <>
+                      <Text style={[styles.itemPrice, { textDecorationLine: 'line-through', color: '#9CA3AF', fontSize: 12 }]}>
+                        ₹{item.finalPrice * item.quantity}
+                      </Text>
+                      <Text style={[styles.itemPrice, { color: '#10B981', marginTop: 2 }]}>
+                        ₹{Math.max(0, (item.finalPrice * item.quantity) - Math.round(itemDiscount))}
+                      </Text>
+                    </>
+                  ) : (
+                    <Text style={styles.itemPrice}>₹{item.finalPrice * item.quantity}</Text>
+                  )}
+                </View>
               </View>
-              <View style={styles.itemInfo}>
-                <Text style={styles.itemName} numberOfLines={1}>
-                  {item.product?.title}
-                </Text>
-                <Text style={styles.itemQuantity}>Qty: {item.quantity}</Text>
-              </View>
-              <Text style={styles.itemPrice}>₹{item.finalPrice * item.quantity}</Text>
-            </View>
-          ))}
+            )
+          })}
           {items.length > 3 && (
             <Text style={styles.moreItems}>+{items.length - 3} more items</Text>
           )}
@@ -567,7 +590,7 @@ const CheckoutScreen = ({ navigation }) => {
                 {items.map((item) => {
                   const isEditing = editingId === item._id;
                   const itemBasePrice = item.basePrice || (item.finalPrice - (item.resellPrice || 0));
-                  
+
                   let itemDiscount = 0;
                   if (appliedCoupon && baseTotalPrice > 0) {
                     const proportion = (itemBasePrice * item.quantity) / baseTotalPrice;
@@ -576,66 +599,80 @@ const CheckoutScreen = ({ navigation }) => {
                   const effectivePrice = Math.max(0, (itemBasePrice * item.quantity) - itemDiscount);
 
                   return (
-                  <View key={item._id} style={[styles.confirmItem, { flexDirection: 'column', alignItems: 'stretch' }]}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-                      <View style={styles.confirmItemImageContainer}>
-                        <Image
-                          source={{ uri: item.product?.images?.[0] ? getImageUrl(item.product.images[0]) : 'https://via.placeholder.com/150' }}
-                          style={styles.confirmItemImage}
-                          resizeMode="cover"
-                        />
-                      </View>
-                      <View style={[styles.confirmItemInfo, { marginLeft: 12 }]}>
-                        <Text style={styles.confirmItemName} numberOfLines={1}>
-                          {item.product?.title}
-                        </Text>
-                        <Text style={styles.confirmItemQty}>Qty: {item.quantity}</Text>
-                        
-                        {user?.resellerApplication?.status === 'approved' && appliedCoupon && (
-                           <Text style={{ fontSize: 11, color: '#10B981', marginTop: 2 }}>
-                             Coupon Discount: -₹{Math.round(itemDiscount)} (Effective Base: ₹{Math.round(effectivePrice)})
-                           </Text>
-                        )}
-                      </View>
-                      <Text style={styles.confirmItemPrice}>₹{item.finalPrice * item.quantity}</Text>
-                    </View>
+                    <View key={item._id} style={[styles.confirmItem, { flexDirection: 'column', alignItems: 'stretch' }]}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+                        <View style={styles.confirmItemImageContainer}>
+                          <Image
+                            source={{ uri: item.product?.images?.[0] ? getImageUrl(item.product.images[0]) : 'https://via.placeholder.com/150' }}
+                            style={styles.confirmItemImage}
+                            resizeMode="cover"
+                          />
+                        </View>
+                        <View style={[styles.confirmItemInfo, { marginLeft: 12 }]}>
+                          <Text style={styles.confirmItemName} numberOfLines={1}>
+                            {item.product?.title}
+                          </Text>
+                          <Text style={styles.confirmItemQty}>Qty: {item.quantity}</Text>
 
-                    {user?.resellerApplication?.status === 'approved' && (
-                      <View style={{ marginTop: 8, paddingLeft: 52 }}>
-                        {isEditing ? (
-                          <View style={{ flexDirection: 'row', gap: 6 }}>
-                            <TextInput
-                              style={{ flex: 1, borderWidth: 1, borderColor: '#4F46E5', borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4, fontSize: 12 }}
-                              placeholder="Margin"
-                              value={editPrice}
-                              onChangeText={setEditPrice}
-                              keyboardType="number-pad"
-                            />
-                            <TouchableOpacity
-                              onPress={() => handleSaveResellPrice(item._id)}
-                              style={{ backgroundColor: '#4F46E5', width: 32, height: 32, borderRadius: 6, justifyContent: 'center', alignItems: 'center' }}
-                            >
-                              <Icon name="checkmark" size={16} color="#fff" />
-                            </TouchableOpacity>
-                          </View>
-                        ) : (
-                          <TouchableOpacity
-                            onPress={() => {
-                              setEditingId(item._id);
-                              setEditPrice((item.resellPrice || 0).toString());
-                            }}
-                            style={{ flexDirection: 'row', alignItems: 'center', gap: 4, paddingVertical: 4, paddingHorizontal: 8, backgroundColor: '#EEF2FF', borderRadius: 6, alignSelf: 'flex-start' }}
-                          >
-                            <Icon name="add-outline" size={14} color="#4F46E5" />
-                            <Text style={{ fontSize: 11, color: '#4F46E5', fontWeight: '600' }}>
-                              {item.resellPrice > 0 ? `+₹${item.resellPrice} margin applied` : 'Add margin'}
+                          {user?.resellerApplication?.status === 'approved' && appliedCoupon && (
+                            <Text style={{ fontSize: 11, color: '#10B981', marginTop: 2 }}>
+                              Coupon Discount: -₹{Math.round(itemDiscount)} (Effective Base: ₹{Math.round(effectivePrice)})
                             </Text>
-                          </TouchableOpacity>
-                        )}
+                          )}
+                        </View>
+                        <View style={{ alignItems: 'flex-end' }}>
+                          {appliedCoupon && Math.round(itemDiscount) > 0 ? (
+                            <>
+                              <Text style={[styles.confirmItemPrice, { textDecorationLine: 'line-through', color: '#9CA3AF', fontSize: 12 }]}>
+                                ₹{item.finalPrice * item.quantity}
+                              </Text>
+                              <Text style={[styles.confirmItemPrice, { color: '#10B981', marginTop: 2 }]}>
+                                ₹{Math.max(0, (item.finalPrice * item.quantity) - Math.round(itemDiscount))}
+                              </Text>
+                            </>
+                          ) : (
+                            <Text style={styles.confirmItemPrice}>₹{item.finalPrice * item.quantity}</Text>
+                          )}
+                        </View>
                       </View>
-                    )}
-                  </View>
-                )})}
+
+                      {user?.resellerApplication?.status === 'approved' && (
+                        <View style={{ marginTop: 8, paddingLeft: 52 }}>
+                          {isEditing ? (
+                            <View style={{ flexDirection: 'row', gap: 6 }}>
+                              <TextInput
+                                style={{ flex: 1, borderWidth: 1, borderColor: '#4F46E5', borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4, fontSize: 12 }}
+                                placeholder="Margin"
+                                value={editPrice}
+                                onChangeText={setEditPrice}
+                                keyboardType="number-pad"
+                              />
+                              <TouchableOpacity
+                                onPress={() => handleSaveResellPrice(item._id)}
+                                style={{ backgroundColor: '#4F46E5', width: 32, height: 32, borderRadius: 6, justifyContent: 'center', alignItems: 'center' }}
+                              >
+                                <Icon name="checkmark" size={16} color="#fff" />
+                              </TouchableOpacity>
+                            </View>
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => {
+                                setEditingId(item._id);
+                                setEditPrice((item.resellPrice || 0).toString());
+                              }}
+                              style={{ flexDirection: 'row', alignItems: 'center', gap: 4, paddingVertical: 4, paddingHorizontal: 8, backgroundColor: '#EEF2FF', borderRadius: 6, alignSelf: 'flex-start' }}
+                            >
+                              <Icon name="add-outline" size={14} color="#4F46E5" />
+                              <Text style={{ fontSize: 11, color: '#4F46E5', fontWeight: '600' }}>
+                                {item.resellPrice > 0 ? `+₹${item.resellPrice} margin applied` : 'Add margin'}
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+                        </View>
+                      )}
+                    </View>
+                  )
+                })}
               </View>
 
               <View style={styles.confirmSection}>
