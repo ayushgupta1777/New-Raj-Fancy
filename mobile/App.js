@@ -20,6 +20,7 @@ const linking = {
           Home: {
             screens: {
               ProductDetails: 'product/:productId',
+              // AIAssistant: 'ai-assistant',
             },
           },
         },

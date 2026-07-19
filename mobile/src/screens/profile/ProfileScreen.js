@@ -189,7 +189,19 @@ const ProfileScreen = ({ navigation }) => {
           description: 'Delivery info'
         }
       ]
-    }
+    },
+    // {
+    //   title: 'AI Features',
+    //   items: [
+    //     {
+    //       icon: 'sparkles-outline',
+    //       title: 'Visual AI Assistant',
+    //       screen: 'AIAssistant',
+    //       color: '#d4af37',
+    //       description: 'Try the AI Shopping Assistant'
+    //     }
+    //   ]
+    // }
   ];
 
   const handleResellerApply = async () => {

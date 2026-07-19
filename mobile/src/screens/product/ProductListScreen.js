@@ -22,20 +22,25 @@ const ProductListScreen = ({ route, navigation }) => {
   const [showFilters, setShowFilters] = useState(false);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
   const [pagination, setPagination] = useState({});
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchProductsList();
+    fetchProductsList(1);
   }, [categoryId, subcategoryId, searchQuery, sortBy]);
 
-  const fetchProductsList = async () => {
+  const fetchProductsList = async (pageNumber = 1) => {
     try {
-      setIsLoading(true);
+      if (pageNumber === 1) {
+        setIsLoading(true);
+      } else {
+        setIsLoadMoreLoading(true);
+      }
       const params = {
         sort: getSortParam(sortBy),
-        page: 1,
+        page: pageNumber,
         limit: 20
       };
 
@@ -50,12 +55,23 @@ const ProductListScreen = ({ route, navigation }) => {
       }
 
       const response = await api.get('/products', { params });
-      setProducts(response.data.data.products);
+      if (pageNumber === 1) {
+        setProducts(response.data.data.products);
+      } else {
+        setProducts(prev => [...prev, ...response.data.data.products]);
+      }
       setPagination(response.data.data.pagination);
     } catch (error) {
       console.error('Failed to fetch products:', error);
     } finally {
       setIsLoading(false);
+      setIsLoadMoreLoading(false);
+    }
+  };
+
+  const handleLoadMore = () => {
+    if (!isLoading && !isLoadMoreLoading && pagination.page < pagination.pages) {
+      fetchProductsList(pagination.page + 1);
     }
   };
 
@@ -255,10 +271,19 @@ const ProductListScreen = ({ route, navigation }) => {
           ListHeaderComponent={
             <View style={{ backgroundColor: '#fff', height: 1000, position: 'absolute', top: -1000, left: 0, right: 0 }} />
           }
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isLoadMoreLoading ? (
+              <View style={{ paddingVertical: 20, alignItems: 'center' }}>
+                <ActivityIndicator size="small" color="#4F46E5" />
+              </View>
+            ) : null
+          }
           refreshControl={
             <RefreshControl
               refreshing={isLoading}
-              onRefresh={fetchProductsList}
+              onRefresh={() => fetchProductsList(1)}
               tintColor="#4F46E5"
             />
           }
