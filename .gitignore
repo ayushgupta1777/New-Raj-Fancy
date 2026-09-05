@@ -8,3 +8,10 @@ testing_playground/styles.css
 
 Server_ERA/
 newrajfancy/
+
+*.patch
+*.zip
+*.json
+*.log
+interview_*.md
+vibe_coding_*.md
