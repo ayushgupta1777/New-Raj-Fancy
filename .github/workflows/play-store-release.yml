@@ -49,7 +49,9 @@ jobs:
           RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
-        run: ./gradlew bundleRelease
+        run: |
+          chmod +x gradlew
+          ./gradlew bundleRelease
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
