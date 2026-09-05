@@ -15,3 +15,4 @@ newrajfancy/
 *.log
 interview_*.md
 vibe_coding_*.md
+.vscode
