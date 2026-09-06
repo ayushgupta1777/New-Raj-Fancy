@@ -5,13 +5,19 @@ import api from '../../services/api';
 
 const DevControlPanelScreen = () => {
   const [maintenance, setMaintenance] = useState(false);
+  const [pushEnabled, setPushEnabled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [toggling, setToggling] = useState(false);
+  const [pushToggling, setPushToggling] = useState(false);
 
   useEffect(() => {
-    api.get('/dev/maintenance/status')
-      .then(r => setMaintenance(r.data.data.maintenanceMode))
-      .finally(() => setLoading(false));
+    Promise.all([
+      api.get('/dev/maintenance/status'),
+      api.get('/settings/push_notifications_enabled')
+    ]).then(([mRes, sRes]) => {
+      setMaintenance(mRes.data.data.maintenanceMode);
+      setPushEnabled(sRes.data?.data?.value === true);
+    }).finally(() => setLoading(false));
   }, []);
 
   const handleMaintenanceToggle = async () => {
@@ -32,6 +38,23 @@ const DevControlPanelScreen = () => {
         }
       ]
     );
+  };
+
+  const handlePushToggle = async (val) => {
+    setPushEnabled(val);
+    setPushToggling(true);
+    try {
+      await api.put('/settings', {
+        key: 'push_notifications_enabled',
+        value: val,
+        description: 'Master switch to globally enable or disable Firebase Push Notifications'
+      });
+    } catch (e) {
+      setPushEnabled(!val);
+      Alert.alert('ERROR', 'FAILED TO TOGGLE PUSH');
+    } finally {
+      setPushToggling(false);
+    }
   };
 
   if (loading) return <View style={s.center}><ActivityIndicator color="#fff" /></View>;
@@ -56,13 +79,22 @@ const DevControlPanelScreen = () => {
         }
       </View>
 
-      {/* Broadcast placeholder */}
-      <View style={s.controlCard}>
+      {/* Push Notifications Toggle */}
+      <View style={[s.controlCard, !pushEnabled && s.dangerCard]}>
         <View style={{ flex: 1 }}>
-          <Text style={s.controlTitle}>BROADCAST_ANNOUNCEMENT</Text>
-          <Text style={s.controlDesc}>Send a push notification to all users. (Coming soon)</Text>
+          <Text style={s.controlTitle}>PUSH_NOTIFICATIONS</Text>
+          <Text style={s.controlSub}>{pushEnabled ? '🟢 SYSTEM ENABLED' : '🔴 SYSTEM DISABLED'}</Text>
+          <Text style={s.controlDesc}>Master switch to enable/disable Firebase push notifications globally.</Text>
         </View>
-        <Icon name="megaphone-outline" size={24} color="rgba(255,255,255,0.3)" />
+        {pushToggling
+          ? <ActivityIndicator color="#fff" />
+          : <Switch
+              value={pushEnabled}
+              onValueChange={handlePushToggle}
+              trackColor={{ false: 'rgba(255,255,255,0.2)', true: '#10B981' }}
+              thumbColor={pushEnabled ? '#fff' : '#fff'}
+            />
+        }
       </View>
 
       {/* Danger zone */}

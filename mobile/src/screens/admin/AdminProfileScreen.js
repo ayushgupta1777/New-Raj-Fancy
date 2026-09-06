@@ -3,15 +3,33 @@ import {
   View, Text, ScrollView, TouchableOpacity,
   StyleSheet, Alert, ActivityIndicator
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { logout } from '../../redux/slices/authSlice';
+import api from '../../services/api';
 
 const AdminProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   // Safe access to auth state
   const auth = useSelector((state) => state.auth) || {};
   const user = auth.user;
+  
+  const [pushEnabled, setPushEnabled] = React.useState(false);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchSettings = async () => {
+        try {
+          const res = await api.get('/settings/push_notifications_enabled');
+          setPushEnabled(res.data?.data?.value === true);
+        } catch (error) {
+          console.error('Failed to fetch settings', error);
+        }
+      };
+      fetchSettings();
+    }, [])
+  );
 
   const handleLogout = () => {
     Alert.alert(
@@ -109,18 +127,12 @@ const AdminProfileScreen = ({ navigation }) => {
           screen: 'Support',
           color: '#4F46E5'
         }
-      ]
-    },
-    {
-      title: 'Developer',
-      items: [
-        {
-          icon: 'code-slash-outline',
-          label: 'Developer Settings',
-          screen: 'DeveloperSettings',
-          color: '#DC2626'
+      ].filter(item => {
+        if (item.screen === 'AdminPushNotifications') {
+          return pushEnabled === true;
         }
-      ]
+        return true;
+      })
     }
   ];
 
@@ -144,7 +156,9 @@ const AdminProfileScreen = ({ navigation }) => {
         <Text style={styles.userEmail}>{user.email || 'N/A'}</Text>
         <View style={styles.roleBadge}>
           <Icon name="star" size={12} color="#fff" />
-          <Text style={styles.roleText}>Administrator</Text>
+          <Text style={styles.roleText}>
+            {user?.role === 'developer' ? 'Developer' : 'Administrator'}
+          </Text>
         </View>
       </View>
 
