@@ -4,6 +4,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 // Async thunks
 export const login = createAsyncThunk(
@@ -45,6 +46,15 @@ export const register = createAsyncThunk(
 export const logout = createAsyncThunk('auth/logout', async () => {
   await AsyncStorage.removeItem('token');
   await AsyncStorage.removeItem('user');
+  
+  try {
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    if (isSignedIn) {
+      await GoogleSignin.signOut();
+    }
+  } catch (error) {
+    console.log('Google SignOut Error during logout:', error);
+  }
 });
 
 export const loadUser = createAsyncThunk('auth/loadUser', async () => {
