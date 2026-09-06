@@ -219,7 +219,11 @@ const HomeScreen = ({ navigation }) => {
           ]}
         >
 
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView 
+            showsVerticalScrollIndicator={false} 
+            bounces={false} 
+            overScrollMode="never"
+          >
             {/* Drawer Header */}
             <View style={styles.drawerHeader}>
               <View style={styles.drawerProfileSection}>
