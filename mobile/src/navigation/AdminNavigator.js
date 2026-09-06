@@ -23,6 +23,8 @@ import AdminChatScreen from '../screens/admin/support/AdminChatScreen';
 import ReleaseManagementScreen from '../screens/admin/ReleaseManagementScreen';
 import CreateShipmentScreen from '../screens/admin/CreateShipmentScreen';
 import OrderTrackingScreen from '../screens/orders/OrderTrackingScreen';
+import AdminPushNotificationsScreen from '../screens/admin/AdminPushNotificationsScreen';
+import DeveloperSettingsScreen from '../screens/admin/DeveloperSettingsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -72,6 +74,8 @@ const SettingsStack = () => (
     <Stack.Screen name="OrdersDashboard" component={OrdersDashboardScreen} />
     <Stack.Screen name="AdminOrderDetails" component={AdminOrderDetailsScreen} />
     <Stack.Screen name="AddProduct" component={AddProductScreen} />
+    <Stack.Screen name="AdminPushNotifications" component={AdminPushNotificationsScreen} />
+    <Stack.Screen name="DeveloperSettings" component={DeveloperSettingsScreen} />
   </Stack.Navigator>
 );
 

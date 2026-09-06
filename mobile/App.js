@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { store } from './src/redux/store';
 import AppNavigator from './src/navigation/AppNavigator';
-import { requestUserPermission, notificationListener } from './src/utils/notifications';
+import { requestUserPermission, notificationListener, createNotificationChannel } from './src/utils/notifications';
 
 
 
@@ -36,6 +36,9 @@ const linking = {
 
 const App = () => {
   useEffect(() => {
+    // Create Android notification channel
+    createNotificationChannel();
+
     // Request notification permission
     requestUserPermission();
 

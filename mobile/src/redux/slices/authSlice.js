@@ -11,7 +11,9 @@ export const login = createAsyncThunk(
   'auth/login',
   async (loginData, { rejectWithValue }) => {
     try {
-      const response = await api.post('/auth/login', loginData);
+      const fcmToken = await AsyncStorage.getItem('fcmToken');
+      const payload = { ...loginData, fcmToken: fcmToken || undefined };
+      const response = await api.post('/auth/login', payload);
       const { token, user } = response.data.data;
 
       await AsyncStorage.setItem('token', token);
@@ -30,7 +32,9 @@ export const register = createAsyncThunk(
   'auth/register',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await api.post('/auth/register', userData);
+      const fcmToken = await AsyncStorage.getItem('fcmToken');
+      const payload = { ...userData, fcmToken: fcmToken || undefined };
+      const response = await api.post('/auth/register', payload);
       const { token, user } = response.data.data;
 
       await AsyncStorage.setItem('token', token);

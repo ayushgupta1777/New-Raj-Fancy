@@ -93,10 +93,9 @@ const AdminProfileScreen = ({ navigation }) => {
         },
         {
           icon: 'notifications-outline',
-          label: 'Announcements',
-          screen: 'Announcements',
-          color: '#F59E0B',
-          badge: 'Coming Soon'
+          label: 'Push Notifications',
+          screen: 'AdminPushNotifications',
+          color: '#F59E0B'
         },
         {
           icon: 'cloud-upload-outline',
@@ -109,6 +108,17 @@ const AdminProfileScreen = ({ navigation }) => {
           label: 'Customer Support',
           screen: 'Support',
           color: '#4F46E5'
+        }
+      ]
+    },
+    {
+      title: 'Developer',
+      items: [
+        {
+          icon: 'code-slash-outline',
+          label: 'Developer Settings',
+          screen: 'DeveloperSettings',
+          color: '#DC2626'
         }
       ]
     }
