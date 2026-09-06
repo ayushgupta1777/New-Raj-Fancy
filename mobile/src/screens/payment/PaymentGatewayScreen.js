@@ -455,19 +455,7 @@ const PaymentGatewayScreen = ({ route, navigation }) => {
           </Text>
         </View>
 
-        {/* IMPORTANT TEST MODE WARNING */}
-        <View style={styles.testModeWarning}>
-          <Icon name="warning" size={20} color="#DC2626" />
-          <View style={styles.testModeTextContainer}>
-            <Text style={styles.testModeTitle}>⚠️ TEST MODE ACTIVE</Text>
-            <Text style={styles.testModeText}>
-              • Use ONLY test card numbers{'\n'}
-              • UPI/Google Pay/PhonePe will NOT work{'\n'}
-              • Test cards: 4111 1111 1111 1111{'\n'}
-              • CVV: Any 3 digits, Expiry: Any future date
-            </Text>
-          </View>
-        </View>
+
 
         {__DEV__ && debugInfo.length > 0 && (
           <TouchableOpacity
