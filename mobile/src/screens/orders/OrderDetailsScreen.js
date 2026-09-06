@@ -737,6 +737,30 @@
 // COMPLETE with Payment Details, Retry Payment, Auto-Cancel
 // ============================================
 
+const formatPaymentError = (errorStr) => {
+  if (!errorStr) return 'Payment could not be completed.';
+  try {
+    const parsed = JSON.parse(errorStr);
+    if (parsed.description) {
+      try {
+        const nested = JSON.parse(parsed.description);
+        if (nested.error) {
+          const desc = nested.error.description;
+          if (desc && desc !== 'undefined') return desc;
+          const reason = nested.error.reason ? nested.error.reason.replace(/_/g, ' ') : '';
+          if (reason) return `Payment failed: ${reason}`;
+        }
+      } catch (e) {
+        if (parsed.description !== 'undefined') return parsed.description;
+      }
+    }
+    return 'Your payment was declined or cancelled. Please try again.';
+  } catch (e) {
+    if (errorStr.length > 100) return 'Payment failed during processing. Please try again.';
+    return errorStr;
+  }
+};
+
 import React, { useEffect, useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet,
@@ -1013,7 +1037,7 @@ const EnhancedOrderDetailsScreen = ({ route, navigation }) => {
                 <Icon name="alert-circle" size={20} color="#EF4444" />
                 <View style={styles.errorContent}>
                   <Text style={styles.errorTitle}>Payment Failed</Text>
-                  <Text style={styles.errorText}>{order.paymentError}</Text>
+                  <Text style={styles.errorText}>{formatPaymentError(order.paymentError)}</Text>
                 </View>
               </View>
             )}
