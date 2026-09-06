@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { logout } from '../../redux/slices/authSlice';
 import AdsngrowFooter from '../../components/AdsngrowFooter';
+import api from '../../services/api';
 
 const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -71,6 +72,30 @@ const ProfileScreen = ({ navigation }) => {
           text: 'Logout',
           style: 'destructive',
           onPress: () => dispatch(logout())
+        }
+      ]
+    );
+  };
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      'Delete Account',
+      'Are you sure you want to permanently delete your account? This action cannot be undone and will permanently delete all your data including profile, addresses, wishlists, and reviews.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await api.delete('/users/account');
+              Alert.alert('Account Deleted', 'Your account has been successfully deleted.');
+              dispatch(logout());
+            } catch (error) {
+              console.log('Delete account error:', error);
+              Alert.alert('Error', error.response?.data?.message || 'Failed to delete account. Please try again.');
+            }
+          }
         }
       ]
     );
@@ -416,6 +441,16 @@ const ProfileScreen = ({ navigation }) => {
       >
         <Icon name="log-out-outline" size={22} color="#FF3B30" />
         <Text style={styles.logoutText}>Logout</Text>
+      </TouchableOpacity>
+
+      {/* Delete Account Button */}
+      <TouchableOpacity
+        style={styles.deleteBtn}
+        onPress={handleDeleteAccount}
+        activeOpacity={0.8}
+      >
+        <Icon name="trash-outline" size={22} color="#DC2626" />
+        <Text style={styles.deleteText}>Delete Account</Text>
       </TouchableOpacity>
 
       <View style={styles.bottomSpacer} />
@@ -804,6 +839,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#FF3B30'
+  },
+  deleteBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    backgroundColor: '#fff',
+    marginHorizontal: 16,
+    paddingVertical: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#FCA5A5',
+    marginBottom: 24
+  },
+  deleteText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#DC2626'
   },
   bottomSpacer: {
     height: 20
