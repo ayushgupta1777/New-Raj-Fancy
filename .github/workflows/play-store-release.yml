@@ -43,14 +43,20 @@ jobs:
             echo "RELEASE_KEYSTORE_BASE64 is not set. Skipping keystore decode."
           fi
 
-      - name: Build Android Release AAB
+      - name: Build Android Release AAB and APK
         working-directory: ./mobile/android
         run: |
           chmod +x gradlew
-          ./gradlew bundleRelease
+          ./gradlew bundleRelease assembleRelease
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release.aab
           path: mobile/android/app/build/outputs/bundle/release/app-release.aab
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release.apk
+          path: mobile/android/app/build/outputs/apk/release/app-release.apk
