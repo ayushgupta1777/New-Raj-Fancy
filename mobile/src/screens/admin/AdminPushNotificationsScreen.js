@@ -4,7 +4,7 @@ import {
   ActivityIndicator, Alert, SafeAreaView, KeyboardAvoidingView, Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import api from '../../../services/api';
+import api from '../../services/api';
 
 const AdminPushNotificationsScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');

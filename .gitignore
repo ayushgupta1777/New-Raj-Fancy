@@ -15,4 +15,7 @@ newrajfancy/
 *.log
 interview_*.md
 vibe_coding_*.md
+
 .vscode
+adi-registration.properties
+release_keystore_base64.txt
