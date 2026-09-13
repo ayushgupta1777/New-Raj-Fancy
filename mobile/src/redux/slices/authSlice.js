@@ -52,9 +52,21 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   await AsyncStorage.removeItem('user');
   
   try {
-    const isSignedIn = await GoogleSignin.isSignedIn();
-    if (isSignedIn) {
+    GoogleSignin.configure({
+      webClientId: '898387401992-2lohdfq6nabu10ak96c3ovis8uehres5.apps.googleusercontent.com',
+    });
+
+    // Try signing out and revoking access to force the account picker next time
+    try {
       await GoogleSignin.signOut();
+    } catch (e) {
+      // Ignore if not signed in
+    }
+    
+    try {
+      await GoogleSignin.revokeAccess();
+    } catch (e) {
+      // Ignore if access already revoked
     }
   } catch (error) {
     console.log('Google SignOut Error during logout:', error);
