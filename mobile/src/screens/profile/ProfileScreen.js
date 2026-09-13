@@ -42,9 +42,21 @@ const ProfileScreen = ({ navigation }) => {
     ifscCode: ''
   });
 
+  const [aiChatEnabled, setAiChatEnabled] = useState(false);
+
   useEffect(() => {
     fetchUserStats();
+    fetchSettings();
   }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const res = await api.get('/settings/ai_chat_enabled');
+      setAiChatEnabled(res.data?.data?.value === true);
+    } catch (e) {
+      console.log('Error fetching AI setting', e);
+    }
+  };
 
   const fetchUserStats = async () => {
     try {
@@ -101,7 +113,7 @@ const ProfileScreen = ({ navigation }) => {
     );
   };
 
-  const menuSections = [
+  let menuSections = [
     {
       title: 'Shopping',
       items: [
@@ -214,20 +226,23 @@ const ProfileScreen = ({ navigation }) => {
           description: 'Delivery info'
         }
       ]
-    },
-    // {
-    //   title: 'AI Features',
-    //   items: [
-    //     {
-    //       icon: 'sparkles-outline',
-    //       title: 'Visual AI Assistant',
-    //       screen: 'AIAssistant',
-    //       color: '#d4af37',
-    //       description: 'Try the AI Shopping Assistant'
-    //     }
-    //   ]
-    // }
+    }
   ];
+
+  if (aiChatEnabled) {
+    menuSections.push({
+      title: 'AI Features',
+      items: [
+        {
+          icon: 'sparkles-outline',
+          title: 'Visual AI Assistant',
+          screen: 'AIAssistant',
+          color: '#d4af37',
+          description: 'Try the AI Shopping Assistant'
+        }
+      ]
+    });
+  }
 
   const handleResellerApply = async () => {
     if (!resellerForm.businessName || !resellerForm.accountHolderName ||

@@ -6,18 +6,28 @@ import api from '../../services/api';
 const DevControlPanelScreen = () => {
   const [maintenance, setMaintenance] = useState(false);
   const [pushEnabled, setPushEnabled] = useState(false);
+  const [forgotPasswordEnabled, setForgotPasswordEnabled] = useState(false);
+  const [aiChatEnabled, setAiChatEnabled] = useState(false);
+  
   const [loading, setLoading] = useState(true);
   const [toggling, setToggling] = useState(false);
   const [pushToggling, setPushToggling] = useState(false);
+  const [forgotPasswordToggling, setForgotPasswordToggling] = useState(false);
+  const [aiChatToggling, setAiChatToggling] = useState(false);
 
   useEffect(() => {
     Promise.all([
       api.get('/dev/maintenance/status'),
-      api.get('/settings/push_notifications_enabled')
-    ]).then(([mRes, sRes]) => {
+      api.get('/settings/push_notifications_enabled'),
+      api.get('/settings/forgot_password_enabled'),
+      api.get('/settings/ai_chat_enabled')
+    ]).then(([mRes, sRes, fpRes, acRes]) => {
       setMaintenance(mRes.data.data.maintenanceMode);
       setPushEnabled(sRes.data?.data?.value === true);
-    }).finally(() => setLoading(false));
+      setForgotPasswordEnabled(fpRes.data?.data?.value === true);
+      setAiChatEnabled(acRes.data?.data?.value === true);
+    }).catch((e) => console.log('Error fetching settings:', e))
+    .finally(() => setLoading(false));
   }, []);
 
   const handleMaintenanceToggle = async () => {
@@ -57,6 +67,40 @@ const DevControlPanelScreen = () => {
     }
   };
 
+  const handleForgotPasswordToggle = async (val) => {
+    setForgotPasswordEnabled(val);
+    setForgotPasswordToggling(true);
+    try {
+      await api.put('/settings', {
+        key: 'forgot_password_enabled',
+        value: val,
+        description: 'Master switch to enable/disable Forgot Password feature'
+      });
+    } catch (e) {
+      setForgotPasswordEnabled(!val);
+      Alert.alert('ERROR', 'FAILED TO TOGGLE FORGOT PASSWORD');
+    } finally {
+      setForgotPasswordToggling(false);
+    }
+  };
+
+  const handleAiChatToggle = async (val) => {
+    setAiChatEnabled(val);
+    setAiChatToggling(true);
+    try {
+      await api.put('/settings', {
+        key: 'ai_chat_enabled',
+        value: val,
+        description: 'Master switch to enable/disable AI Shopping Assistant'
+      });
+    } catch (e) {
+      setAiChatEnabled(!val);
+      Alert.alert('ERROR', 'FAILED TO TOGGLE AI CHAT');
+    } finally {
+      setAiChatToggling(false);
+    }
+  };
+
   if (loading) return <View style={s.center}><ActivityIndicator color="#fff" /></View>;
 
   return (
@@ -93,6 +137,42 @@ const DevControlPanelScreen = () => {
               onValueChange={handlePushToggle}
               trackColor={{ false: 'rgba(255,255,255,0.2)', true: '#10B981' }}
               thumbColor={pushEnabled ? '#fff' : '#fff'}
+            />
+        }
+      </View>
+
+      {/* Forgot Password Toggle */}
+      <View style={[s.controlCard, !forgotPasswordEnabled && s.dangerCard]}>
+        <View style={{ flex: 1 }}>
+          <Text style={s.controlTitle}>FORGOT_PASSWORD_FEATURE</Text>
+          <Text style={s.controlSub}>{forgotPasswordEnabled ? '🟢 SYSTEM ENABLED' : '🔴 SYSTEM DISABLED'}</Text>
+          <Text style={s.controlDesc}>Master switch to show/hide the Forgot Password option on login screen.</Text>
+        </View>
+        {forgotPasswordToggling
+          ? <ActivityIndicator color="#fff" />
+          : <Switch
+              value={forgotPasswordEnabled}
+              onValueChange={handleForgotPasswordToggle}
+              trackColor={{ false: 'rgba(255,255,255,0.2)', true: '#10B981' }}
+              thumbColor={forgotPasswordEnabled ? '#fff' : '#fff'}
+            />
+        }
+      </View>
+
+      {/* AI Chat Toggle */}
+      <View style={[s.controlCard, !aiChatEnabled && s.dangerCard]}>
+        <View style={{ flex: 1 }}>
+          <Text style={s.controlTitle}>AI_SHOPPING_ASSISTANT</Text>
+          <Text style={s.controlSub}>{aiChatEnabled ? '🟢 SYSTEM ENABLED' : '🔴 SYSTEM DISABLED'}</Text>
+          <Text style={s.controlDesc}>Master switch to show/hide the AI Assistant feature in user profiles.</Text>
+        </View>
+        {aiChatToggling
+          ? <ActivityIndicator color="#fff" />
+          : <Switch
+              value={aiChatEnabled}
+              onValueChange={handleAiChatToggle}
+              trackColor={{ false: 'rgba(255,255,255,0.2)', true: '#10B981' }}
+              thumbColor={aiChatEnabled ? '#fff' : '#fff'}
             />
         }
       </View>

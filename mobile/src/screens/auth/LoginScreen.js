@@ -25,11 +25,18 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [forgotPasswordEnabled, setForgotPasswordEnabled] = useState(false);
 
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    import('../../services/api').then(api => {
+      api.default.get('/settings/forgot_password_enabled').then(res => {
+        setForgotPasswordEnabled(res.data?.data?.value === true);
+      }).catch(e => console.log('Error fetching forgot password setting', e));
+    });
+    
     GoogleSignin.configure({
       webClientId: '898387401992-2lohdfq6nabu10ak96c3ovis8uehres5.apps.googleusercontent.com', // User needs to replace this
       offlineAccess: true,
@@ -112,9 +119,11 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles['login-premium-input-group']}>
             <View style={styles['login-premium-password-header']}>
               <Text style={styles['login-premium-input-label']}>Password</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-                <Text style={styles['login-premium-forgot-text']}>Forgot?</Text>
-              </TouchableOpacity>
+              {forgotPasswordEnabled && (
+                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                  <Text style={styles['login-premium-forgot-text']}>Forgot?</Text>
+                </TouchableOpacity>
+              )}
             </View>
             <View style={styles['login-premium-input-container']}>
               <Icon name="lock-closed-outline" size={20} color="#5E5CE6" style={styles['login-premium-input-icon']} />
