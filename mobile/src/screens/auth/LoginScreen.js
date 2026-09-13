@@ -112,7 +112,7 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles['login-premium-input-group']}>
             <View style={styles['login-premium-password-header']}>
               <Text style={styles['login-premium-input-label']}>Password</Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
                 <Text style={styles['login-premium-forgot-text']}>Forgot?</Text>
               </TouchableOpacity>
             </View>
