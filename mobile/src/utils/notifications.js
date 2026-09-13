@@ -52,7 +52,6 @@ export const notificationListener = () => {
       android: {
         channelId: 'default',
         importance: AndroidImportance.HIGH,
-        smallIcon: 'ic_notification',
       },
     });
   });
