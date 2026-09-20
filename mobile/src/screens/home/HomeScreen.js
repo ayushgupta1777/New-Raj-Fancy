@@ -554,11 +554,15 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </View>
 
-          {/* TOP SELLERS */}
+          {/* TOP RATED */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Top Sellers</Text>
+            <Text style={styles.sectionTitle}>Top Rated</Text>
 
-            {products.slice(0, 5).map((product, index) => (
+            {products
+              .slice()
+              .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))
+              .slice(0, 5)
+              .map((product, index) => (
               <TouchableOpacity
                 key={product._id}
                 style={styles.topSellerCard}
