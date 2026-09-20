@@ -53,6 +53,10 @@ const LoginScreen = ({ navigation }) => {
   const handleGoogleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
+      const isSignedIn = await GoogleSignin.isSignedIn();
+      if (isSignedIn) {
+        await GoogleSignin.signOut();
+      }
       const response = await GoogleSignin.signIn();
       const userInfo = response.data ? response.data : response;
       const user = userInfo.user || userInfo;
@@ -119,11 +123,9 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles['login-premium-input-group']}>
             <View style={styles['login-premium-password-header']}>
               <Text style={styles['login-premium-input-label']}>Password</Text>
-              {forgotPasswordEnabled && (
-                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-                  <Text style={styles['login-premium-forgot-text']}>Forgot?</Text>
-                </TouchableOpacity>
-              )}
+              <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                <Text style={styles['login-premium-forgot-text']}>Forgot?</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles['login-premium-input-container']}>
               <Icon name="lock-closed-outline" size={20} color="#5E5CE6" style={styles['login-premium-input-icon']} />

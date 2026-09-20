@@ -67,6 +67,10 @@ const RegisterScreen = ({ navigation }) => {
   const handleGoogleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
+      const isSignedIn = await GoogleSignin.isSignedIn();
+      if (isSignedIn) {
+        await GoogleSignin.signOut();
+      }
       const response = await GoogleSignin.signIn();
       const userInfo = response.data ? response.data : response; // Handle different package versions
       const user = userInfo.user || userInfo;
