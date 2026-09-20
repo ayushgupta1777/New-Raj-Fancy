@@ -3,16 +3,20 @@
 // mobile/screens/PrivacyScreen.js
 // ============================================
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const PrivacyScreen = () => {
+  const openDeletionPage = () => {
+    Linking.openURL('https://newrajfancystore.adsngrow.in/delete-account');
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Icon name="lock-closed-outline" size={48} color="#4F46E5" />
         <Text style={styles.title}>Privacy Policy</Text>
-        <Text style={styles.subtitle}>Effective Date: January 30, 2026</Text>
+        <Text style={styles.subtitle}>Effective Date: September 20, 2026</Text>
       </View>
 
       <View style={styles.content}>
@@ -22,21 +26,29 @@ const PrivacyScreen = () => {
           title="1. Information Collected"
           content="• Name, phone number, and email address
 • Shipping and billing address details
-• Order history and payment transaction information"
+• Order history and payment transaction information
+• Reseller bank/payment information (UPI, Bank Account)
+• Profile/photo information (Avatars)
+• Chat/messages and product reviews
+• App activity (browsing/cart) and FCM/push notification tokens"
         />
 
         <Section
           icon="compass"
           iconColor="#5E5CE6"
           title="2. Usage of Data"
-          content="We use your data for order processing, delivery, and customer support. With your explicit consent, we may send marketing communications via WhatsApp, SMS, or Email."
+          content="We use your data for order processing, delivery, and customer support. With your explicit consent, we may send marketing communications and push notifications via FCM."
         />
 
         <Section
           icon="share-social"
           iconColor="#FF9500"
           title="3. Data Sharing"
-          content="We only share data with trusted delivery partners and secure payment gateways. Data may also be shared with legal authorities if strictly required under applicable Indian laws."
+          content="We only share data with trusted third-party services:
+• Razorpay (for secure payments)
+• Shiprocket (for shipping logistics)
+• Firebase/FCM (for push notifications)
+Data may also be shared with legal authorities if strictly required under applicable laws."
         />
 
         <Section
@@ -49,9 +61,22 @@ const PrivacyScreen = () => {
         <Section
           icon="people"
           iconColor="#34C759"
-          title="5. User Rights"
-          content="As per Indian data protection principles, you may request access to your data, corrections of inaccuracies, or complete deletion by contacting our privacy team."
+          title="5. User Rights & Account Deletion"
+          content="You may request access to your data, corrections, or complete deletion by using the 'Delete Account' feature in your profile.
+• If you delete your account, your personal data will be removed.
+• Historical orders and transactions will be anonymized to maintain financial referential integrity without identifying you.
+You can also request account deletion via our public webpage:"
         />
+
+        <TouchableOpacity style={styles.deleteLinkBox} onPress={openDeletionPage}>
+          <Icon name="globe-outline" size={24} color="#e53e3e" />
+          <View style={styles.contactContent}>
+            <Text style={[styles.contactTitle, { color: '#e53e3e' }]}>External Deletion Request</Text>
+            <Text style={[styles.contactText, { color: '#c53030' }]}>
+              newrajfancystore.adsngrow.in/delete-account
+            </Text>
+          </View>
+        </TouchableOpacity>
 
         <View style={styles.contactBox}>
           <Icon name="mail" size={24} color="#4F46E5" />
@@ -148,6 +173,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4B5563',
     lineHeight: 22
+  },
+  deleteLinkBox: {
+    flexDirection: 'row',
+    backgroundColor: '#fff5f5',
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 8,
+    marginBottom: 8,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#fed7d7'
   },
   contactBox: {
     flexDirection: 'row',

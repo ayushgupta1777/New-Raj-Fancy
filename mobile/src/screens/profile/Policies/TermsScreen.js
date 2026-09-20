@@ -12,7 +12,7 @@ const TermsScreen = () => {
       <View style={styles.header}>
         <Icon name="document-text-outline" size={48} color="#4F46E5" />
         <Text style={styles.title}>Terms & Conditions</Text>
-        <Text style={styles.subtitle}>Effective Date: January 30, 2026</Text>
+        <Text style={styles.subtitle}>Effective Date: September 20, 2026</Text>
       </View>
 
       <View style={styles.content}>
@@ -27,22 +27,22 @@ Email: Newrajfancystore@gmail.com"
 
         <Section
           number="2"
-          title="Use of Platform"
-          content="By accessing our website or mobile application, you agree to use the platform only for lawful purposes. Any misuse, fraud, or unauthorized activity may lead to immediate account suspension or termination."
+          title="Use of Platform & Account Deletion"
+          content="By accessing our platform, you agree to use it lawfully. You may request account deletion at any time. Upon deletion, your personal data is permanently removed. However, to maintain financial and legal compliance, your historical transaction and order records will be retained in an anonymized format."
         />
 
         <Section
           number="3"
           title="Product & Pricing"
           content="• Prices are inclusive of GST as per Government regulations
-• Product images are for representation purposes; slight variations in color or texture may occur
+• Product images are for representation purposes
 • Prices are subject to change without prior notice based on market conditions"
         />
 
         <Section
           number="4"
-          title="Orders & Acceptance"
-          content="Orders are confirmed only after successful payment verification. We reserve the right to cancel orders due to stock issues, pricing errors, or suspicious activity detected by our security systems."
+          title="Orders & Returns"
+          content="Orders are confirmed after successful payment verification. We offer a 7-day return window from the date of delivery. Return requests must be made within this timeframe. Refunds for approved returns will be credited according to your original payment method or wallet."
         />
 
         <Section
