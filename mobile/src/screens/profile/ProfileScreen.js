@@ -83,7 +83,16 @@ const ProfileScreen = ({ navigation }) => {
         {
           text: 'Logout',
           style: 'destructive',
-          onPress: () => dispatch(logout())
+          onPress: async () => {
+            try {
+              const { GoogleSignin } = require('@react-native-google-signin/google-signin');
+              await GoogleSignin.revokeAccess();
+              await GoogleSignin.signOut();
+            } catch (e) {
+              console.log('Google SignOut Error', e);
+            }
+            dispatch(logout());
+          }
         }
       ]
     );
