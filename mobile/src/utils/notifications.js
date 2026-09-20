@@ -5,16 +5,27 @@ import messaging from '@react-native-firebase/messaging';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { PermissionsAndroid, Platform } from 'react-native';
+
 // Request Notification Permission
 export const requestUserPermission = async () => {
-  const authStatus = await messaging().requestPermission();
-  const enabled =
-    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  if (Platform.OS === 'android' && Platform.Version >= 33) {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      await getFCMToken();
+    }
+  } else {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-  if (enabled) {
-    console.log('Authorization status:', authStatus);
-    await getFCMToken();
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+      await getFCMToken();
+    }
   }
 };
 
