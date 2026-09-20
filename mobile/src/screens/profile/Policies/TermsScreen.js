@@ -21,7 +21,7 @@ const TermsScreen = () => {
           title="Business Information"
           content="Business Name: New Raj Fancy
 Address: Infront of Balaji Parisar, Beside Sai Astha Marriage Garden, Gotegaon, Narsinghpur, M.P 487118
-Contact: 07649830348
+Contact: +91 72409 92230
 Email: Newrajfancystore@gmail.com"
         />
 

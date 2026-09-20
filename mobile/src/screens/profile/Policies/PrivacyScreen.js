@@ -93,7 +93,7 @@ You can also request account deletion via our public webpage:"
           <View style={styles.contactContent}>
             <Text style={styles.contactTitle}>Questions About Privacy?</Text>
             <Text style={styles.contactText}>
-              Contact our privacy team at Newrajfancystore@gmail.com
+              Contact our privacy team at Newrajfancystore@gmail.com or +91 72409 92230
             </Text>
           </View>
         </View>
