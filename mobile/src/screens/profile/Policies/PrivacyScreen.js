@@ -69,11 +69,21 @@ You can also request account deletion via our public webpage:"
         />
 
         <TouchableOpacity style={styles.deleteLinkBox} onPress={openDeletionPage}>
-          <Icon name="globe-outline" size={24} color="#e53e3e" />
+          <Icon name="trash-outline" size={24} color="#e53e3e" />
           <View style={styles.contactContent}>
             <Text style={[styles.contactTitle, { color: '#e53e3e' }]}>External Deletion Request</Text>
             <Text style={[styles.contactText, { color: '#c53030' }]}>
               newrajfancystore.adsngrow.in/delete-account
+            </Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.deleteLinkBox, { backgroundColor: '#F0F9FF', borderColor: '#B9E6FE' }]} onPress={() => Linking.openURL('https://newrajfancystore.adsngrow.in/privacy-policy')}>
+          <Icon name="globe-outline" size={24} color="#0284C7" />
+          <View style={styles.contactContent}>
+            <Text style={[styles.contactTitle, { color: '#0284C7' }]}>View Official Privacy Policy</Text>
+            <Text style={[styles.contactText, { color: '#0369A1' }]}>
+              newrajfancystore.adsngrow.in/privacy-policy
             </Text>
           </View>
         </TouchableOpacity>

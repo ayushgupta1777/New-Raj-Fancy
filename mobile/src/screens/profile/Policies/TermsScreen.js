@@ -3,7 +3,7 @@
 // mobile/screens/TermsScreen.js
 // ============================================
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const TermsScreen = () => {
@@ -73,6 +73,16 @@ Email: Newrajfancystore@gmail.com"
           title="Limitation of Liability"
           content="New Raj Fancy is not liable for indirect damages, delivery delays caused by third-party logistics, or business losses caused by platform downtime or third-party service interruptions."
         />
+
+        <TouchableOpacity style={[styles.linkBox, { backgroundColor: '#F0F9FF', borderColor: '#B9E6FE' }]} onPress={() => Linking.openURL('https://newrajfancystore.adsngrow.in/terms-and-conditions')}>
+          <Icon name="globe-outline" size={24} color="#0284C7" />
+          <View style={styles.linkContent}>
+            <Text style={[styles.linkTitle, { color: '#0284C7' }]}>View Official Terms & Conditions</Text>
+            <Text style={[styles.linkText, { color: '#0369A1' }]}>
+              newrajfancystore.adsngrow.in/terms-and-conditions
+            </Text>
+          </View>
+        </TouchableOpacity>
 
         <View style={styles.footer}>
           <Icon name="shield-checkmark" size={24} color="#10B981" />
@@ -163,6 +173,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4B5563',
     lineHeight: 22
+  },
+  linkBox: {
+    flexDirection: 'row',
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 8,
+    marginBottom: 16,
+    alignItems: 'center',
+    borderWidth: 1
+  },
+  linkContent: {
+    flex: 1,
+    marginLeft: 12
+  },
+  linkTitle: {
+    fontSize: 15,
+    fontWeight: '600',
+    marginBottom: 4
+  },
+  linkText: {
+    fontSize: 13,
+    lineHeight: 18
   },
   footer: {
     flexDirection: 'row',
