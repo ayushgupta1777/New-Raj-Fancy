@@ -6,6 +6,7 @@ import notifee, { AndroidImportance } from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { PermissionsAndroid, Platform } from 'react-native';
+import api from '../services/api';
 
 // Request Notification Permission
 export const requestUserPermission = async () => {
@@ -36,7 +37,17 @@ export const getFCMToken = async () => {
     console.log('FCM Token:', token);
 
     await AsyncStorage.setItem('fcmToken', token);
-    // also send token to your backend if required
+    
+    // Send token to backend if user is already authenticated
+    const authToken = await AsyncStorage.getItem('token');
+    if (authToken) {
+      try {
+        await api.put('/users/fcm-token', { fcmToken: token });
+        console.log('FCM Token successfully synced to backend');
+      } catch (err) {
+        console.error('Failed to sync FCM token to backend:', err);
+      }
+    }
   } catch (error) {
     console.error('Error getting FCM token:', error);
   }
@@ -65,6 +76,22 @@ export const notificationListener = () => {
         importance: AndroidImportance.HIGH,
       },
     });
+  });
+
+  // Handle token refresh
+  messaging().onTokenRefresh(async (token) => {
+    console.log('FCM Token Refreshed:', token);
+    await AsyncStorage.setItem('fcmToken', token);
+    
+    const authToken = await AsyncStorage.getItem('token');
+    if (authToken) {
+      try {
+        await api.put('/users/fcm-token', { fcmToken: token });
+        console.log('Refreshed FCM Token successfully synced to backend');
+      } catch (err) {
+        console.error('Failed to sync refreshed FCM token to backend:', err);
+      }
+    }
   });
 
   // Background messages are handled in index.js
