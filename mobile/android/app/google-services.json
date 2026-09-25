@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "898387401992-c6mpj83ic1sioo82e6ee1djpnp6jaho2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.newrajfancystore.app",
+            "certificate_hash": "b6e2f9ade1d29a2dc75ea066047b1451fb0b52f6"
+          }
+        },
+        {
+          "client_id": "898387401992-jvmfdklvcf542sr3d2db8so19hidj22r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.newrajfancystore.app",
+            "certificate_hash": "d7ecbd84e1fa3f420ec5764c826f1c534ab28b7b"
+          }
+        },
+        {
           "client_id": "898387401992-qn1o7tnddndqflksclc6m3jl4486quhj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
