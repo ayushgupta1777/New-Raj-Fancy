@@ -403,7 +403,11 @@ const ProfileScreen = ({ navigation }) => {
           )} */}
         </TouchableOpacity>
 
-        <View style={styles.statCard}>
+        <TouchableOpacity
+          style={styles.statCard}
+          onPress={() => navigation.navigate('Points')}
+          activeOpacity={0.7}
+        >
           <View style={[styles.statIcon, { backgroundColor: '#FEF3C7' }]}>
             <Icon name="medal-outline" size={24} color="#F59E0B" />
           </View>
@@ -413,7 +417,7 @@ const ProfileScreen = ({ navigation }) => {
           ) : (
             <Text style={styles.statValue}>{userStats.points}</Text>
           )} */}
-        </View>
+        </TouchableOpacity>
       </View>
 
       {/* Menu Sections */}

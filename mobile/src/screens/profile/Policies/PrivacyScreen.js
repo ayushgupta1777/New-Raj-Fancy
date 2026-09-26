@@ -27,23 +27,30 @@ const PrivacyScreen = () => {
           content="• Name, phone number, and email address
 • Shipping and billing address details
 • Order history and payment transaction information
-• Reseller bank/payment information (UPI, Bank Account)
+• Reseller business details (Business Name) and payout information (Bank Account Number, IFSC Code, Account Holder Name, Bank Name, UPI ID)
 • Profile/photo information (Avatars)
 • Chat/messages and product reviews
 • App activity (browsing/cart) and FCM/push notification tokens"
         />
 
         <Section
+          icon="time"
+          iconColor="#10B981"
+          title="2. App Usage and Activity Data"
+          content="We may collect information about your use of the New Raj Fancy app, such as active app usage time, activity dates, and related progress information, to provide features such as daily streaks, activity history, and personalized app functionality."
+        />
+
+        <Section
           icon="compass"
           iconColor="#5E5CE6"
-          title="2. Usage of Data"
+          title="3. Usage of Data"
           content="We use your data for order processing, delivery, and customer support. With your explicit consent, we may send marketing communications and push notifications via FCM."
         />
 
         <Section
           icon="share-social"
           iconColor="#FF9500"
-          title="3. Data Sharing"
+          title="4. Data Sharing"
           content="We only share data with trusted third-party services:
 • Razorpay (for secure payments)
 • Shiprocket (for shipping logistics)
@@ -54,14 +61,14 @@ Data may also be shared with legal authorities if strictly required under applic
         <Section
           icon="shield-checkmark"
           iconColor="#FF3B30"
-          title="4. Data Security"
+          title="5. Data Security"
           content="We implement industry-standard security practices and encryption to protect your sensitive personal and financial data from unauthorized access."
         />
 
         <Section
           icon="people"
           iconColor="#34C759"
-          title="5. User Rights & Account Deletion"
+          title="6. User Rights & Account Deletion"
           content="You may request access to your data, corrections, or complete deletion by using the 'Delete Account' feature in your profile.
 • If you delete your account, your personal data will be removed.
 • Historical orders and transactions will be anonymized to maintain financial referential integrity without identifying you.

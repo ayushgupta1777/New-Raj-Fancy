@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { TouchableOpacity, View } from 'react-native';
 import AdminStack from './AdminNavigator';
 import useActivityTracker from '../hooks/useActivityTracker';
+import useDailyStreakTracker from '../hooks/useDailyStreakTracker';
 
 // Customer/Reseller Screens
 import HomeScreen from '../screens/home/HomeScreen';
@@ -62,6 +63,7 @@ import OrdersDashboardScreen from '../screens/admin/OrdersDashboardScreen';
 import CategoryManagementScreen from '../screens/admin/CategoryManagementScreen';
 
 // ProfileScreen
+import PointsScreen from '../screens/profile/PointsScreen';
 import WishlistScreen from '../screens/profile/WishlistScreen';
 import MyReviewsScreen from '../screens/profile/AddReviewScreen';
 import AddressesScreen from '../screens/profile/AddressesScreen';
@@ -215,6 +217,7 @@ const OrdersStack = () => (
 const ProfileStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="ProfileMain" component={ProfileScreen} />
+    <Stack.Screen name="Points" component={PointsScreen} />
     <Stack.Screen name="BecomeReseller" component={BecomeResellerScreen} />
     {/*<Stack.Screen name="MyEarnings" component={MyEarningsScreen} />
     <Stack.Screen name="MySales" component={MySalesScreen} /> */}
@@ -343,6 +346,7 @@ const CURRENT_VERSION = '1.0.4';
 // MAIN NAVIGATOR
 const MainNavigator = () => {
   useActivityTracker(); // 🟢 Real-time monitoring for Developer Terminal
+  useDailyStreakTracker(); // 🟢 Daily streak background tracker
   const { user, token } = useSelector((state) => state.auth);
   const [upgradeInfo, setUpgradeInfo] = React.useState({ visible: false, version: '', url: '' });
 

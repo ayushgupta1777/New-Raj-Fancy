@@ -1,48 +1,41 @@
-# New Raj Fancy - Mobile App (ECOM-Display)
+# New Raj Fancy Store - Full Stack Application
 
-This repository contains the **Frontend Mobile Application** (React Native) for New Raj Fancy. 
-This is a cleanly separated frontend repository optimized for production, Play Store deployment, and easy CI/CD integration.
+Welcome to the New Raj Fancy Store repository. This is a complete, production-ready E-commerce application that powers the Play Store mobile app and its supporting backend infrastructure.
 
-## 🏗 Architecture Overview
+## 🗂 Repository Structure
 
-*   **Frontend (This Repository):** Located in the `mobile/` directory. Built with React Native.
-*   **Backend Server:** Managed in a separate repository and hosted externally (Hostinger). This provides a clean microservice architecture.
-*   **Design Assets:** Managed locally outside of version control to keep this repository lightweight and fast.
+This repository is organized into a clean monorepo containing both the frontend and backend:
 
-## 🚀 Getting Started
+- **`mobile/`**: The React Native frontend application (Android/iOS). Built with Expo/React Native CLI.
+- **`Server_ERA/`**: The Node.js (Express) backend API server. Connects to MongoDB and Firebase.
+- **`docs/`**: Comprehensive documentation for architecture, APIs, and deployment instructions.
 
-### Prerequisites
-*   Node.js (>= 20)
-*   React Native CLI environment setup (Android Studio / Xcode)
+## 📚 Documentation Directory
 
-### Installation
-1. Clone this repository.
-2. Navigate to the mobile directory:
-   ```bash
-   cd mobile
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
+Because this application is currently running in production, thorough documentation has been created for maintenance and handover purposes. Please refer to the specific markdown files below:
 
-### Running the App
-**For Android:**
+1. **[Architecture Overview](docs/ARCHITECTURE.md)** 
+   - Learn about the system design, tech stack, data flow, and how the Mobile app communicates with the Server and MongoDB.
+2. **[API Reference](docs/API_REFERENCE.md)**
+   - Detailed documentation of the backend API routes, including Authentication (JWT) and Push Notification endpoints.
+3. **[Deployment & Server Management](docs/DEPLOYMENT.md)**
+   - Instructions on how the backend is deployed on the Hostinger VPS, Docker configurations, and managing the live MongoDB database.
+
+## 🚀 Quick Start
+
+### Backend (Node.js)
 ```bash
+cd Server_ERA
+npm install
+npm run dev
+```
+
+### Frontend (React Native)
+```bash
+cd mobile
+npm install
 npm run android
 ```
 
-**For iOS (Mac only):**
-```bash
-cd ios
-pod install
-cd ..
-npm run ios
-```
-
-## 📦 Production & Deployment
-
-*   **Android Package Name:** `com.newrajfancystore.app`
-*   **Version Management:** When preparing a new release, update `versionCode` and `versionName` inside `mobile/android/app/build.gradle`.
-
-> **Note:** Ensure you have created a `.env` file in the `mobile/` directory containing your production API endpoints before building the release APK/AAB.
+## 🔐 Production Note
+Do not commit sensitive `.env` files, Firebase `google-services.json` (frontend), or `firebase-service-account.json` (backend) to version control. These must be manually configured on the live server and local testing environments.
