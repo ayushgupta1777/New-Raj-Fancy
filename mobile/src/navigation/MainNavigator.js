@@ -7,6 +7,7 @@ import { TouchableOpacity, View } from 'react-native';
 import AdminStack from './AdminNavigator';
 import useActivityTracker from '../hooks/useActivityTracker';
 import useDailyStreakTracker from '../hooks/useDailyStreakTracker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Customer/Reseller Screens
 import HomeScreen from '../screens/home/HomeScreen';
@@ -341,7 +342,7 @@ import { BASE_URL } from '../services/api';
 import UpgradeModal from '../components/common/UpgradeModal';
 
 // APP VERSION
-const CURRENT_VERSION = '1.0.4';
+const CURRENT_VERSION = '1.1.1';
 
 // MAIN NAVIGATOR
 const MainNavigator = () => {
@@ -360,15 +361,28 @@ const MainNavigator = () => {
       const serverVersion = response.data.data.value;
 
       if (serverVersion && serverVersion !== CURRENT_VERSION) {
-        // Version mismatch, fetch update URL
-        const urlRes = await axios.get(`${BASE_URL}/api/settings/app_update_url`);
-        const updateUrl = urlRes.data.data.value;
+        // Fetch how many times we've shown it for THIS version
+        const storageKey = `@update_prompt_${serverVersion}`;
+        const promptCountStr = await AsyncStorage.getItem(storageKey);
+        const promptCount = promptCountStr ? parseInt(promptCountStr, 10) : 0;
 
-        setUpgradeInfo({
-          visible: true,
-          version: serverVersion,
-          url: updateUrl || ''
-        });
+        if (promptCount < 3) {
+          // Version mismatch, fetch update URL
+          const urlRes = await axios.get(`${BASE_URL}/api/settings/app_update_url`);
+          const updateUrl = urlRes.data.data.value;
+
+          // Only show the popup if there's actually an update URL provided!
+          if (updateUrl && updateUrl.trim() !== '') {
+            setUpgradeInfo({
+              visible: true,
+              version: serverVersion,
+              url: updateUrl
+            });
+
+            // Increment count
+            await AsyncStorage.setItem(storageKey, (promptCount + 1).toString());
+          }
+        }
       }
     } catch (error) {
       console.warn('App version check failed:', error.message);
