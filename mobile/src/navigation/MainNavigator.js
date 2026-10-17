@@ -31,7 +31,7 @@ import SubcategoryListScreen from '../screens/product/SubcategoryListScreen';
 // Search and Notifications Screens
 import SearchScreen from '../screens/home/SearchScreen';
 import NotificationsScreen from '../screens/home/NotificationsScreen';
-// import AIShoppingAssistantScreen from '../screens/ai/AIShoppingAssistantScreen'; // AI FEATURE
+import AIShoppingAssistantScreen from '../screens/ai/AIShoppingAssistantScreen'; // AI FEATURE
 // Reseller Feature Screens (Core Feature)
 import ResellerHubScreen from '../screens/reseller/ResellerHubScreen_np';
 import ShareProductScreen from '../screens/reseller/ShareProductScreen';
@@ -104,7 +104,7 @@ const HomeStack = () => (
     <Stack.Screen name="UserChat" component={UserChatScreen} />
     <Stack.Screen name="OrderDetails" component={OrderDetailsScreen} />
     <Stack.Screen name="OrderTracking" component={OrderTrackingScreen} />
-    {/* <Stack.Screen name="AIAssistant" component={AIShoppingAssistantScreen} /> */}
+    <Stack.Screen name="AIAssistant" component={AIShoppingAssistantScreen} />
   </Stack.Navigator>
 );
 
@@ -238,7 +238,7 @@ const ProfileStack = () => (
     <Stack.Screen name="EditProfile" component={EditProfileScreen} />
     <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
     <Stack.Screen name="PaymentMethods" component={PaymentMethodsScreen} />
-    {/* <Stack.Screen name="AIAssistant" component={AIShoppingAssistantScreen} /> */}
+    <Stack.Screen name="AIAssistant" component={AIShoppingAssistantScreen} />
 
     {/* Legal & Policy Pages */}
     <Stack.Screen
